@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="A&H Wealth Group LLC - Servicios financieros profesionales en Miami y Nashville. Consultoría financiera, preparación de impuestos, seguros de vida, reparación de crédito y planificación financiera.">
+    <meta name="keywords"
+        content="servicios financieros, Miami, Nashville, seguros de vida, reparación de crédito, planificación financiera, impuestos">
+    <title>A&H Wealth Group LLC - Protección Financiera y Organización Patrimonial</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="navbar-logo">
+                <img src="logo.jpg" alt="A&H Wealth Group Logo">
+                <span class="navbar-brand">A&H Wealth Group</span>
+            </a>
+
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="#inicio" class="navbar-link">Inicio</a></li>
+                <li><a href="#servicios" class="navbar-link">Servicios</a></li>
+                <li><a href="#proceso" class="navbar-link">Cómo Funciona</a></li>
+                <li><a href="#clientes" class="navbar-link">Clientes</a></li>
+                <li><a href="#faq" class="navbar-link">FAQ</a></li>
+                <li><a href="#contacto" class="navbar-link">Contacto</a></li>
+                <li><a href="https://wa.me/17867941152?text=Hola,%20me%20interesa%20conocer%20sus%20servicios%20financieros"
+                        class="btn btn-whatsapp" target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                        </svg>
+                        WhatsApp
+                    </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Proteja su Futuro Financiero con <span class="text-gold">Confianza y Experiencia</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Soluciones financieras integrales diseñadas para proteger su patrimonio, optimizar sus impuestos y
+                    construir un futuro próspero para usted y su familia.
+                </p>
+                <div class="hero-cta">
+                    <a href="https://wa.me/17867941152?text=Hola,%20me%20interesa%20una%20consulta%20gratuita"
+                        class="btn btn-primary" target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                        </svg>
+                        Consulta Gratuita por WhatsApp
+                    </a>
+                    <a href="#servicios" class="btn btn-secondary">Conocer Servicios</a>
+                </div>
+                <div class="hero-badges">
+                    <div class="badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        </svg>
+                        Miami, FL
+                    </div>
+                    <div class="badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        </svg>
+                        Nashville, TN
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section class="section-light" id="servicios">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2>Nuestros <span class="text-gold">Servicios</span></h2>
+                <p class="text-gray mt-2">Soluciones financieras completas adaptadas a sus necesidades</p>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V9h7V2.99c3.72 1.15 6.47 4.82 7 8.94h-7v1.06z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Consultoría en Productos Financieros</h3>
+                    <p class="card-text">
+                        Asesoramiento experto en la selección de productos financieros que se ajusten a sus objetivos de
+                        inversión y protección patrimonial.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Preparación de Impuestos</h3>
+                    <p class="card-text">
+                        Maximice sus deducciones y minimice su carga fiscal con nuestra preparación profesional de
+                        declaraciones de impuestos para individuos y negocios.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Consultoría en Seguros de Vida</h3>
+                    <p class="card-text">
+                        Proteja el futuro de su familia con pólizas de seguro de vida diseñadas para garantizar
+                        seguridad financiera a largo plazo.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Consultoría en Reparación de Crédito</h3>
+                    <p class="card-text">
+                        Mejore su puntaje crediticio con estrategias probadas y asesoramiento personalizado para
+                        alcanzar sus metas financieras.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Planificación Financiera</h3>
+                    <p class="card-text">
+                        Desarrolle un plan financiero integral que incluya ahorro, inversión, jubilación y protección de
+                        activos para un futuro próspero.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="section-dark" id="proceso">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="text-white">Cómo <span class="text-gold">Trabajamos</span></h2>
+                <p class="text-white mt-2" style="opacity: 0.9;">Un proceso simple y efectivo en 3 pasos</p>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <span style="font-size: 2rem; font-weight: 700; color: var(--color-primary-dark);">1</span>
+                    </div>
+                    <h3 class="card-title">Evaluación</h3>
+                    <p class="card-text">
+                        Analizamos su situación financiera actual, objetivos y necesidades específicas en una consulta
+                        inicial sin compromiso.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <span style="font-size: 2rem; font-weight: 700; color: var(--color-primary-dark);">2</span>
+                    </div>
+                    <h3 class="card-title">Plan Personalizado</h3>
+                    <p class="card-text">
+                        Diseñamos una estrategia financiera personalizada que se ajusta perfectamente a sus metas y
+                        presupuesto.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <span style="font-size: 2rem; font-weight: 700; color: var(--color-primary-dark);">3</span>
+                    </div>
+                    <h3 class="card-title">Implementación y Seguimiento</h3>
+                    <p class="card-text">
+                        Ejecutamos el plan y brindamos acompañamiento continuo para asegurar que alcance sus objetivos
+                        financieros.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TARGET CLIENTS SECTION -->
+    <section class="section-light" id="clientes">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2>¿Quiénes son Nuestros <span class="text-gold">Clientes?</span></h2>
+                <p class="text-gray mt-2">Ayudamos a diversos perfiles a alcanzar sus metas financieras</p>
+            </div>
+
+            <div class="grid grid-4">
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Individuos</h3>
+                    <p class="card-text">
+                        Profesionales que buscan optimizar sus finanzas personales y construir patrimonio.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Familias</h3>
+                    <p class="card-text">
+                        Familias que desean proteger su futuro y el de sus seres queridos.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Dueños de Negocios</h3>
+                    <p class="card-text">
+                        Empresarios que necesitan planificación fiscal y protección de activos.
+                    </p>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <div class="card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Mejora de Crédito</h3>
+                    <p class="card-text">
+                        Personas que buscan mejorar su historial crediticio y acceder a mejores oportunidades.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2>Preguntas <span class="text-gold">Frecuentes</span></h2>
+                <p class="text-gray mt-2">Respuestas a las dudas más comunes</p>
+            </div>
+
+            <div class="faq-container" style="max-width: 800px; margin: 0 auto;">
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        <span>¿Cuánto cuestan sus servicios?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Los costos varían según el servicio específico que necesite. Ofrecemos consultas gratuitas
+                            para evaluar su situación y proporcionarle un presupuesto personalizado sin compromiso.
+                            Nuestros precios son competitivos y transparentes.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        <span>¿Ofrecen consultas virtuales?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, ofrecemos consultas virtuales por videollamada para su comodidad. Puede reunirse con
+                            nuestros asesores desde cualquier lugar, ya sea en Miami, Nashville o cualquier otra
+                            ubicación. También atendemos presencialmente en nuestras oficinas.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        <span>¿Qué documentos necesito para comenzar?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Los documentos requeridos dependen del servicio específico. Para preparación de impuestos:
+                            W-2, 1099, recibos de deducciones. Para seguros: identificación y información de salud
+                            básica. Para reparación de crédito: reporte de crédito actual. Le proporcionaremos una lista
+                            detallada en su consulta inicial.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        <span>¿Cuánto tiempo toma ver resultados?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>El tiempo varía según el servicio. La preparación de impuestos puede completarse en días. La
+                            reparación de crédito generalmente muestra resultados en 3-6 meses. La planificación
+                            financiera es un proceso continuo con hitos a corto, mediano y largo plazo.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <button class="faq-question">
+                        <span>¿Trabajan con clientes fuera de Miami y Nashville?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, gracias a nuestras consultas virtuales podemos atender clientes en todo Estados Unidos.
+                            Nuestros servicios están disponibles independientemente de su ubicación geográfica.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="section-dark" id="contacto">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 class="text-white">Comience su <span class="text-gold">Transformación Financiera</span></h2>
+                <p class="text-white mt-2" style="opacity: 0.9;">Contáctenos hoy para una consulta gratuita</p>
+            </div>
+
+            <div class="grid grid-2" style="align-items: start;">
+                <div class="animate-on-scroll">
+                    <h3 class="text-white mb-3">Información de Contacto</h3>
+
+                    <div style="margin-bottom: 2rem;">
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; color: var(--color-accent-gold-light);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                            <div>
+                                <strong>Miami, FL</strong><br>
+                                <span style="opacity: 0.8;">Nashville, TN</span>
+                            </div>
+                        </div>
+
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; color: var(--color-accent-gold-light);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                            </svg>
+                            <div>
+                                <strong>WhatsApp</strong><br>
+                                <a href="https://wa.me/17867941152"
+                                    style="color: var(--color-accent-gold); text-decoration: none;">+1 (786)
+                                    794-1152</a>
+                            </div>
+                        </div>
+
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; color: var(--color-accent-gold-light);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10h5v-2h-5c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8v1.43c0 .79-.71 1.57-1.5 1.57s-1.5-.78-1.5-1.57V12c0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.38 0 2.64-.56 3.54-1.47.65.89 1.77 1.47 2.96 1.47 1.97 0 3.5-1.6 3.5-3.57V12c0-5.52-4.48-10-10-10zm0 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
+                            </svg>
+                            <div>
+                                <strong>Email</strong><br>
+                                <a href="mailto:info@ahwealthgroup.com"
+                                    style="color: var(--color-accent-gold); text-decoration: none;">info@ahwealthgroup.com</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/17867941152?text=Hola,%20me%20interesa%20una%20consulta%20gratuita"
+                        class="btn btn-whatsapp" target="_blank" style="width: 100%; max-width: 100%;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                        </svg>
+                        Chatear por WhatsApp
+                    </a>
+                </div>
+
+                <div class="card animate-on-scroll">
+                    <h3 class="card-title">Envíenos un Mensaje</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label class="form-label" for="name">Nombre Completo</label>
+                            <input type="text" id="name" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" id="email" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Teléfono</label>
+                            <input type="tel" id="phone" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="service">Servicio de Interés</label>
+                            <select id="service" class="form-input" required>
+                                <option value="">Seleccione un servicio</option>
+                                <option value="financial">Consultoría Financiera</option>
+                                <option value="tax">Preparación de Impuestos</option>
+                                <option value="insurance">Seguros de Vida</option>
+                                <option value="credit">Reparación de Crédito</option>
+                                <option value="planning">Planificación Financiera</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="message">Mensaje</label>
+                            <textarea id="message" class="form-textarea" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="logo.jpg" alt="A&H Wealth Group" style="height: 80px; margin-bottom: 1rem;">
+                    <p style="color: var(--color-gray-light); line-height: 1.7;">
+                        Protegiendo su futuro financiero con experiencia, confianza y soluciones personalizadas.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Servicios</h3>
+                    <ul class="footer-links">
+                        <li><a href="#servicios">Consultoría Financiera</a></li>
+                        <li><a href="#servicios">Preparación de Impuestos</a></li>
+                        <li><a href="#servicios">Seguros de Vida</a></li>
+                        <li><a href="#servicios">Reparación de Crédito</a></li>
+                        <li><a href="#servicios">Planificación Financiera</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Empresa</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#proceso">Cómo Trabajamos</a></li>
+                        <li><a href="#clientes">Nuestros Clientes</a></li>
+                        <li><a href="#faq">Preguntas Frecuentes</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Ubicaciones</h3>
+                    <ul class="footer-links">
+                        <li style="color: var(--color-gray-light);">Miami, Florida</li>
+                        <li style="color: var(--color-gray-light);">Nashville, Tennessee</li>
+                    </ul>
+                    <h3 style="margin-top: 1.5rem;">Síguenos</h3>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <a href="#" style="color: var(--color-accent-gold); font-size: 1.5rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                        </a>
+                        <a href="#" style="color: var(--color-accent-gold); font-size: 1.5rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 A&H Wealth Group LLC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT BUTTON -->
+    <a href="https://wa.me/17867941152?text=Hola,%20necesito%20ayuda%20con%20servicios%20financieros"
+        class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <svg viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
