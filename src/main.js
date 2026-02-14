@@ -207,25 +207,43 @@ document.addEventListener('DOMContentLoaded', function () {
                 'planning': 'Planificación Financiera'
             };
 
-            // Build email body
-            const subject = encodeURIComponent(`Nuevo contacto - ${serviceNames[service] || service}`);
-            const body = encodeURIComponent(
-                `Nombre: ${name}\n` +
-                `Email: ${email}\n` +
-                `Teléfono: ${phone}\n` +
-                `Servicio de interés: ${serviceNames[service] || service}\n\n` +
-                `Mensaje:\n${message}`
-            );
+            // Disable button while sending
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Enviando...';
+            submitBtn.disabled = true;
 
-            // Send to Anibal's email
-            const mailtoURL = `mailto:ahwealthgroup25@gmail.com?subject=${subject}&body=${body}`;
-            window.location.href = mailtoURL;
+            // Send form data automatically via FormSubmit.co
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('phone', phone);
+            formData.append('service', serviceNames[service] || service);
+            formData.append('message', message);
+            formData.append('_subject', `Nuevo contacto de ${name} - ${serviceNames[service] || service}`);
+            formData.append('_captcha', 'false');
+            formData.append('_template', 'table');
 
-            // Reset form
-            contactForm.reset();
-
-            // Show success message
-            showNotification('¡Formulario enviado! Se abrirá tu correo electrónico.', 'success');
+            fetch('https://formsubmit.co/ajax/ahwealthgroup25@gmail.com', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('¡Mensaje enviado correctamente! Nos pondremos en contacto pronto.', 'success');
+                        contactForm.reset();
+                    } else {
+                        showNotification('Error al enviar. Por favor intenta de nuevo.', 'error');
+                    }
+                })
+                .catch(error => {
+                    showNotification('Error de conexión. Por favor intenta de nuevo.', 'error');
+                })
+                .finally(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
         });
     }
 
