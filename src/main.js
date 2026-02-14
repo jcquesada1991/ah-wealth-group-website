@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const service = document.getElementById('service').value;
             const message = document.getElementById('message').value;
 
-            // Create WhatsApp message
+            // Map service values to readable names
             const serviceNames = {
                 'financial': 'Consultoría Financiera',
                 'tax': 'Preparación de Impuestos',
@@ -207,23 +207,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 'planning': 'Planificación Financiera'
             };
 
-            const whatsappMessage = `Hola, mi nombre es ${name}.%0A%0A` +
-                `Servicio de interés: ${serviceNames[service]}%0A%0A` +
-                `Email: ${email}%0A` +
-                `Teléfono: ${phone}%0A%0A` +
-                `Mensaje: ${message}`;
+            // Build email body
+            const subject = encodeURIComponent(`Nuevo contacto - ${serviceNames[service] || service}`);
+            const body = encodeURIComponent(
+                `Nombre: ${name}\n` +
+                `Email: ${email}\n` +
+                `Teléfono: ${phone}\n` +
+                `Servicio de interés: ${serviceNames[service] || service}\n\n` +
+                `Mensaje:\n${message}`
+            );
 
-            // Redirect to WhatsApp
-            const whatsappNumber = '17867941152'; // A&H Wealth Group Business Number
-            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-
-            window.open(whatsappURL, '_blank');
+            // Send to Anibal's email
+            const mailtoURL = `mailto:ahwealthgroup25@gmail.com?subject=${subject}&body=${body}`;
+            window.location.href = mailtoURL;
 
             // Reset form
             contactForm.reset();
 
             // Show success message
-            showNotification('¡Mensaje enviado! Serás redirigido a WhatsApp.', 'success');
+            showNotification('¡Formulario enviado! Se abrirá tu correo electrónico.', 'success');
         });
     }
 
@@ -262,42 +264,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.body.removeChild(notification);
             }, 500);
         }, 3000);
-    }
-
-    // ========================================
-    // WHATSAPP FLOAT BUTTON ANIMATION
-    // ========================================
-    const whatsappFloat = document.querySelector('.whatsapp-float');
-
-    if (whatsappFloat) {
-        // Add hover tooltip
-        const tooltip = document.createElement('div');
-        tooltip.textContent = '¿Necesitas ayuda?';
-        tooltip.style.position = 'absolute';
-        tooltip.style.right = '70px';
-        tooltip.style.top = '50%';
-        tooltip.style.transform = 'translateY(-50%)';
-        tooltip.style.background = 'var(--color-primary-dark)';
-        tooltip.style.color = 'white';
-        tooltip.style.padding = '0.5rem 1rem';
-        tooltip.style.borderRadius = 'var(--radius-sm)';
-        tooltip.style.whiteSpace = 'nowrap';
-        tooltip.style.opacity = '0';
-        tooltip.style.transition = 'opacity 0.3s ease';
-        tooltip.style.pointerEvents = 'none';
-        tooltip.style.fontSize = '0.875rem';
-        tooltip.style.fontWeight = '600';
-
-        whatsappFloat.style.position = 'relative';
-        whatsappFloat.appendChild(tooltip);
-
-        whatsappFloat.addEventListener('mouseenter', function () {
-            tooltip.style.opacity = '1';
-        });
-
-        whatsappFloat.addEventListener('mouseleave', function () {
-            tooltip.style.opacity = '0';
-        });
     }
 
     // ========================================
