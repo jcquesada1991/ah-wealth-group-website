@@ -8,13 +8,24 @@
 # OS files
 .DS_Store
 Thumbs.db
-desktop.ini
 
 # Logs
 *.log
+npm-debug.log*
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Vite
+dist/
+.env
+.env.local
+.env.*.local
 
 # Temporary files
 *.tmp
+repo_create.json
 *.temp
 
 # Backup files
