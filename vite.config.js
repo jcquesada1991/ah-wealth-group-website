@@ -8,7 +8,8 @@ export default defineConfig({
         emptyOutDir: true,
         rollupOptions: {
             input: {
-                main: './index.html'
+                main: './index.html',
+                portal: './AH_Wealth_Portal.html'
             }
         }
     },
