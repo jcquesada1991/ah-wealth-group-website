@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A&H Wealth Group LLC - Portal Cliente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="icon" type="image/jpeg" href="/logo.jpg">
+    <style>
+        /* Additional portal-specific styles injected to match index.html aesthetics */
+        body { background-color: var(--color-off-white); font-family: var(--font-body); }
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.4s ease; }
+        
+        .sec-bar { display: flex; align-items: baseline; gap: 9px; border-bottom: 2px solid var(--color-gray-light); padding-bottom: 5px; margin: 2rem 0 1rem; }
+        .sec-bar::before { content: ''; width: 4px; height: 16px; background: var(--color-accent-gold); border-radius: 2px; flex-shrink: 0; }
+        .sec-es { font-size: 1.1rem; font-weight: 700; color: var(--color-primary-dark); }
+        .sec-en { font-size: 0.85rem; color: var(--color-gray); font-style: italic; }
+        
+        .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .f { margin-bottom: 1rem; }
+        .f label { display: block; font-weight: 600; color: var(--color-primary-dark); margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .f label em { font-style: italic; font-weight: 400; color: var(--color-gray); margin-left: 5px; }
+        .f input, .f select, .f textarea { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--color-gray-light); border-radius: var(--radius-sm); font-family: inherit; font-size: 1rem; color: var(--color-gray-dark); transition: all 0.3s ease; background-color: var(--color-white); }
+        .f input:focus, .f select:focus, .f textarea:focus { border-color: var(--color-accent-gold); outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
+        .f textarea { min-height: 100px; resize: vertical; }
+
+        .cw { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+        .chip { padding: 0.5rem 1rem; border: 1.5px solid var(--color-gray-light); border-radius: var(--radius-full); cursor: pointer; color: var(--color-gray-dark); background: var(--color-white); transition: all 0.2s ease; font-size: 0.9rem; font-weight: 500; }
+        .chip:hover { border-color: var(--color-accent-gold); color: var(--color-primary-dark); }
+        .chip.on { background: var(--color-primary-dark); border-color: var(--color-primary-dark); color: var(--color-accent-gold); }
+        
+        .note-gold { background: var(--color-accent-gold-light); border-left: 4px solid var(--color-accent-gold); padding: 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; color: var(--color-accent-gold-dark); font-weight: 600; margin: 1rem 0; font-size: 0.95rem; }
+        
+        .fhdr { background: var(--gradient-primary); padding: 1.5rem 2rem; border-bottom: 3px solid var(--color-accent-gold); display: flex; align-items: center; gap: 1rem; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+        .fhdr-ico { width: 48px; height: 48px; background: rgba(212, 175, 55, 0.15); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; color: var(--color-accent-gold); border: 1px solid rgba(212, 175, 55, 0.3); }
+        .fhdr h2 { color: var(--color-white); font-size: 1.5rem; margin-bottom: 0.2rem; font-family: var(--font-heading);}
+        .fhdr p { color: rgba(255,255,255,0.7); font-size: 0.9rem; font-style: italic; margin-bottom: 0; }
+        
+        .fbody { padding: 2rem; }
+        
+        .form-card { padding: 0; background: var(--color-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; margin: 4rem auto; max-width: 900px; border: 1px solid var(--color-gray-light); }
+        
+        .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-gray-light); }
+        
+        .dp { background: var(--color-white); border: 1px solid var(--color-gray-light); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow-md); }
+        .dp-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-gray-light); }
+        .dr { display: flex; justify-content: space-between; align-items: baseline; padding: 0.5rem 0; border-bottom: 1px solid var(--color-gray-light); font-size: 0.95rem; }
+        .dr:last-child { border-bottom: none; }
+        .dk { color: var(--color-gray); width: 45%; font-weight: 500; }
+        .dv { color: var(--color-primary-dark); font-weight: 600; text-align: right; }
+        
+        @media(max-width: 620px){ .fg { grid-template-columns: 1fr; } .btn-row { flex-direction: column-reverse; gap: 1rem; } .btn-row button { width: 100%; } }
+        
+        /* Table Styles for Dashboard */
+        .tw { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 2rem;}
+        thead th { background: var(--color-primary-dark); color: var(--color-white); padding: 0.75rem 1rem; text-align: left; font-weight: 600; white-space: nowrap; }
+        tbody td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--color-gray-light); color: var(--color-gray-dark); }
+        tbody tr:hover td { background: var(--color-off-white); }
+        .dash-badge { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); letter-spacing: 0.5px; }
+        .b-navy { background: rgba(26, 41, 66, 0.1); color: var(--color-primary); border: 1px solid rgba(26, 41, 66, 0.2); }
+        .b-gold { background: var(--color-accent-gold-light); color: var(--color-accent-gold-dark); border: 1px solid var(--color-accent-gold); }
+        .b-green { background: rgba(16, 185, 129, 0.1); color: var(--color-success); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .b-gray { background: var(--color-gray-light); color: var(--color-gray-dark); }
+        
+        .tbl-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; border: 1.5px solid var(--color-gray-light); border-radius: var(--radius-sm); background: var(--color-white); cursor: pointer; color: var(--color-primary-dark); font-weight: 600; transition: all 0.2s; }
+        .tbl-btn:hover { border-color: var(--color-accent-gold); color: var(--color-accent-gold-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        .filter-sel { font-size: 0.9rem; padding: 0.5rem 1rem; border: 2px solid var(--color-gray-light); border-radius: var(--radius-sm); background: var(--color-white); color: var(--color-primary-dark); outline: none; font-weight: 600; cursor: pointer; }
+        .filter-sel:focus { border-color: var(--color-accent-gold); }
+        
+        .stats-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat { background: var(--color-white); border: 1px solid var(--color-gray-light); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-sm); border-top: 4px solid var(--color-primary-dark); }
+        .stat.gold { border-top-color: var(--color-accent-gold); }
+        .stat-lbl { font-size: 0.85rem; color: var(--color-gray); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-val { font-family: var(--font-heading); font-size: 2.5rem; color: var(--color-primary-dark); line-height: 1; font-weight: 700; }
+        .stat-sub { font-size: 0.8rem; color: var(--color-gray); margin-top: 0.5rem; }
+        
+        /* Container for dashboard */
+        .dash-container { max-width: 1200px; margin: 4rem auto; padding: 0 20px;}
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .dash-title { font-family: var(--font-heading); color: var(--color-primary-dark); font-size: 2.5rem; }
+    </style>
+</head>
+<body style="background-color: var(--color-off-white);">
+
+<nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <img src="/logo.jpg" alt="A&H Wealth Group Logo">
+                <span class="navbar-brand">A&H Wealth Group</span>
+            </a>
+
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html#inicio" class="navbar-link">Inicio</a></li>
+                <li><a href="index.html#servicios" class="navbar-link">Servicios</a></li>
+                <li><a href="index.html#proceso" class="navbar-link">Cómo Funciona</a></li>
+                <li><a href="index.html#clientes" class="navbar-link">Clientes</a></li>
+                <li><a href="index.html#faq" class="navbar-link">FAQ</a></li>
+                <li><a href="index.html#contacto" class="navbar-link">Contacto</a></li>
+                <li><a href="https://wa.me/17867941152?text=Hola,%20me%20interesa%20conocer%20sus%20servicios%20financieros"
+                        class="btn btn-whatsapp" target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                        </svg>
+                        WhatsApp
+                    </a></li>
+            </ul>
+        </div>
+    </nav>\n<div class="topbar" style="display:none;">
+  <div class="topbar-inner">
+    <div class="logo-wrap" onclick="window.location.href='index.html'">
+      <img class="logo-img" src="https://ahwealthgroup.com/logo.jpg" alt="A&H" onerror="this.style.display='none'">
+      <div><div class="logo-name">A&H Wealth Group</div><span class="logo-sub">Portal de Clientes</span></div>
+    </div>
+    <div class="nav-sp"></div>
+    <button class="nav-link" id="nav-home" onclick="window.location.href='index.html'">Inicio</button>
+    <button class="nav-link" id="nav-dash" onclick="showScreen('dashboard')">Dashboard</button>
+    <a class="nav-wa" href="https://wa.me/17867941152?text=Hola,%20me%20interesa%20una%20consulta" target="_blank">WhatsApp</a>
+  </div>
+</div>
+
+<!-- TAXES PERSONALES -->
+<div id="screen-tax1" class="screen container">
+<div class="form-card">
+  <div class="fhdr"><div class="fhdr-ico">📄</div><div><h2>Impuestos Personales · 1099 / Independiente</h2><p>Personal Tax Return · Form TAX-01</p></div></div>
+  <div class="fbody">
+    <div class="sec-bar"><span class="sec-es">Información personal</span><span class="sec-en">Personal information</span></div>
+    <div class="fg">
+      <div class="f"><label>Nombre completo <em>/ Full legal name</em></label><input id="t1-nombre" placeholder="Juan Pérez"></div>
+      <div class="f"><label>Fecha de nacimiento <em>/ Date of birth</em></label><input id="t1-dob" placeholder="MM/DD/YYYY"></div>
+      <div class="f"><label>SSN / ITIN</label><input id="t1-ssn" placeholder="XXX-XX-XXXX"></div>
+      <div class="f"><label>Teléfono / WhatsApp</label><input id="t1-tel" placeholder="+1 (000) 000-0000"></div>
+      <div class="f"><label>Email</label><input id="t1-email" placeholder="correo@email.com"></div>
+      <div class="f"><label>Estado <em>/ State</em></label><select id="t1-state"><option value="">Selecciona...</option><option>California</option><option>Florida</option><option>Georgia</option><option>Illinois</option><option>Nevada</option><option>New Jersey</option><option>New York</option><option>North Carolina</option><option>Tennessee</option><option>Texas</option><option>Virginia</option><option>Otro / Other</option></select></div>
+    </div>
+    <div class="f"><label>Estado civil <em>/ Filing status</em></label><div class="cw" id="t1-filing"><span class="chip" onclick="chip(this)">Soltero/a (Single)</span><span class="chip" onclick="chip(this)">Casado/a conjunto (MFJ)</span><span class="chip" onclick="chip(this)">Casado/a separado (MFS)</span><span class="chip" onclick="chip(this)">Jefe de hogar (HOH)</span></div></div>
+    <div class="f"><label>Dependientes — nombres y SSN <em>/ Dependents</em></label><textarea id="t1-dep" placeholder="Ej: María Pérez, SSN 000-00-0001, hija"></textarea></div>
+    <div class="sec-bar"><span class="sec-es">Ingresos</span><span class="sec-en">Income</span></div>
+    <div class="note-gold">⚠ Trae todos los 1099-NEC, 1099-K, W-2 recibidos. Sin formularios, necesitamos reporte de ingresos.</div>
+    <div class="fg">
+      <div class="f"><label>Ingreso independiente total <em>/ Self-employment income</em></label><input id="t1-income" placeholder="$0.00"></div>
+      <div class="f"><label>Empleador W-2 (si aplica) <em>/ W-2 employer</em></label><input id="t1-w2" placeholder="Nombre empresa o N/A"></div>
+    </div>
+    <div class="f"><label>Otros ingresos <em>/ Other income</em></label><div class="cw" id="t1-otherinc"><span class="chip" onclick="chip(this)">Renta / Rental</span><span class="chip" onclick="chip(this)">Inversiones</span><span class="chip" onclick="chip(this)">Cripto / Crypto</span><span class="chip" onclick="chip(this)">Desempleo / Unemployment</span><span class="chip" onclick="chip(this)">Ninguno / None</span></div></div>
+    <div class="sec-bar"><span class="sec-es">Deducciones de negocio</span><span class="sec-en">Business deductions</span></div>
+    <div class="f"><label>Tipo de trabajo <em>/ Type of work</em></label><div class="cw" id="t1-tipo"><span class="chip" onclick="chip(this)">Uber/Lyft/DoorDash</span><span class="chip" onclick="chip(this)">Construcción</span><span class="chip" onclick="chip(this)">Limpieza</span><span class="chip" onclick="chip(this)">Belleza</span><span class="chip" onclick="chip(this)">Delivery</span><span class="chip" onclick="chip(this)">Otro / Other</span></div></div>
+    <div class="fg">
+      <div class="f"><label>Millas de vehículo <em>/ Business miles</em></label><input id="t1-miles" placeholder="0 millas"></div>
+      <div class="f"><label>Gastos de negocio <em>/ Business expenses</em></label><input id="t1-gastos" placeholder="$0.00"></div>
+      <div class="f"><label>Home office — sq ft</label><input id="t1-homeoffice" placeholder="0 sq ft o N/A"></div>
+      <div class="f"><label>Estimated taxes pagados <em>/ Quarterly taxes</em></label><input id="t1-estimated" placeholder="$0.00"></div>
+    </div>
+    <div class="sec-bar"><span class="sec-es">Historial fiscal</span><span class="sec-en">Tax history</span></div>
+    <div class="fg">
+      <div class="f"><label>¿Primera declaración en EE.UU.?</label><select id="t1-primera"><option value="">Selecciona...</option><option>Sí / Yes</option><option>No</option></select></div>
+      <div class="f"><label>¿Años sin declarar? <em>/ Unfiled years?</em></label><input id="t1-unfiled" placeholder="Ninguno o indica los años"></div>
+      <div class="f"><label>¿Deuda con el IRS? <em>/ IRS debt?</em></label><select id="t1-irs"><option value="">Selecciona...</option><option>No</option><option>Sí, deuda activa</option><option>Sí, en payment plan</option></select></div>
+      <div class="f"><label>¿Declaración año anterior? <em>/ Prior year return?</em></label><select id="t1-prior"><option value="">Selecciona...</option><option>Sí / Yes</option><option>No</option></select></div>
+    </div>
+    <div class="f"><label>Notas adicionales <em>/ Additional notes</em></label><textarea id="t1-notas" placeholder="Cualquier información adicional..."></textarea></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="window.location.href='index.html'">← Regresar</button><button class="btn btn-primary" onclick="sub('tax1')">Enviar formulario →</button></div>
+  </div>
+</div>
+</div>
+
+<!-- TAXES CORPORATIVOS -->
+<div id="screen-tax2" class="screen container">
+<div class="form-card">
+  <div class="fhdr"><div class="fhdr-ico">🏢</div><div><h2>Impuestos Corporativos · LLC / S-Corp</h2><p>Business Tax Return · Form TAX-02</p></div></div>
+  <div class="fbody">
+    <div class="sec-bar"><span class="sec-es">Información del dueño</span><span class="sec-en">Owner information</span></div>
+    <div class="fg">
+      <div class="f"><label>Nombre del dueño <em>/ Owner full name</em></label><input id="t2-owner" placeholder="Nombre completo"></div>
+      <div class="f"><label>SSN o ITIN</label><input id="t2-ssn" placeholder="XXX-XX-XXXX"></div>
+      <div class="f"><label>Teléfono / WhatsApp</label><input id="t2-tel" placeholder="+1 (000) 000-0000"></div>
+      <div class="f"><label>Email</label><input id="t2-email" placeholder="correo@email.com"></div>
+      <div class="f"><label>Estado <em>/ State</em></label><select id="t2-state"><option value="">Selecciona...</option><option>California</option><option>Florida</option><option>Georgia</option><option>Illinois</option><option>Nevada</option><option>New Jersey</option><option>New York</option><option>North Carolina</option><option>Tennessee</option><option>Texas</option><option>Otro</option></select></div>
+    </div>
+    <div class="sec-bar"><span class="sec-es">Información del negocio</span><span class="sec-en">Business information</span></div>
+    <div class="fg">
+      <div class="f"><label>Nombre legal del negocio <em>/ Legal business name</em></label><input id="t2-bizname" placeholder="My Business LLC"></div>
+      <div class="f"><label>EIN</label><input id="t2-ein" placeholder="XX-XXXXXXX"></div>
+      <div class="f"><label>Estado de registro <em>/ State of formation</em></label><input id="t2-bizstate" placeholder="Florida"></div>
+      <div class="f"><label>Fecha apertura <em>/ Start date</em></label><input id="t2-started" placeholder="MM/DD/YYYY"></div>
+      <div class="f"><label>Industria <em>/ Industry</em></label><input id="t2-industry" placeholder="Construcción, limpieza, etc."></div>
+    </div>
+    <div class="f"><label>Tipo de entidad <em>/ Entity type</em></label><div class="cw" id="t2-entity"><span class="chip" onclick="chip(this)">LLC 1 miembro</span><span class="chip" onclick="chip(this)">LLC multi-miembro</span><span class="chip" onclick="chip(this)">S-Corp</span><span class="chip" onclick="chip(this)">C-Corp</span><span class="chip" onclick="chip(this)">Partnership</span></div></div>
+    <div class="sec-bar"><span class="sec-es">Finanzas del negocio</span><span class="sec-en">Business financials</span></div>
+    <div class="note-gold">Necesitamos P&L o estados de cuenta del año fiscal completo. / We need a P&L or full-year bank statements.</div>
+    <div class="fg">
+      <div class="f"><label>Ingresos brutos del año <em>/ Gross revenue</em></label><input id="t2-revenue" placeholder="$0.00"></div>
+      <div class="f"><label>Gastos totales estimados <em>/ Total expenses</em></label><input id="t2-expenses" placeholder="$0.00"></div>
+      <div class="f"><label>¿Empleados W-2?</label><select id="t2-emp"><option value="">Selecciona...</option><option>No</option><option>Sí — 1 a 5</option><option>Sí — 6 a 20</option><option>Sí — 20+</option></select></div>
+      <div class="f"><label>Estimated taxes pagados</label><input id="t2-est" placeholder="$0.00"></div>
+      <div class="f"><label>¿Elección S-Corp activa?</label><select id="t2-scorp"><option value="">Selecciona...</option><option>No</option><option>Sí</option><option>En proceso</option><option>No sé</option></select></div>
+      <div class="f"><label>¿Deuda con IRS?</label><select id="t2-irs"><option value="">Selecciona...</option><option>No</option><option>Sí</option></select></div>
+    </div>
+    <div class="f"><label>Documentos disponibles <em>/ Available documents</em></label><div class="cw" id="t2-docs"><span class="chip" onclick="chip(this)">P&L preparado</span><span class="chip" onclick="chip(this)">Estados de cuenta</span><span class="chip" onclick="chip(this)">Recibos / gastos</span><span class="chip" onclick="chip(this)">Nómina / Payroll</span><span class="chip" onclick="chip(this)">Declaración anterior</span><span class="chip" onclick="chip(this)">Ninguno aún</span></div></div>
+    <div class="f"><label>Notas adicionales</label><textarea id="t2-notas" placeholder="Cualquier información adicional..."></textarea></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="window.location.href='index.html'">← Regresar</button><button class="btn btn-primary" onclick="sub('tax2')">Enviar formulario →</button></div>
+  </div>
+</div>
+</div>
+
+<!-- BOOKKEEPING -->
+<div id="screen-bk" class="screen container">
+<div class="form-card">
+  <div class="fhdr"><div class="fhdr-ico">📊</div><div><h2>Bookkeeping Mensual</h2><p>Monthly Bookkeeping Service · Form BK-01</p></div></div>
+  <div class="fbody">
+    <div class="sec-bar"><span class="sec-es">Información del cliente y negocio</span><span class="sec-en">Client & business info</span></div>
+    <div class="fg">
+      <div class="f"><label>Nombre del dueño <em>/ Owner name</em></label><input id="bk-owner" placeholder="Nombre completo"></div>
+      <div class="f"><label>Nombre del negocio <em>/ Business name</em></label><input id="bk-bizname" placeholder="My Business LLC"></div>
+      <div class="f"><label>EIN</label><input id="bk-ein" placeholder="XX-XXXXXXX"></div>
+      <div class="f"><label>Teléfono / WhatsApp</label><input id="bk-tel" placeholder="+1 (000) 000-0000"></div>
+      <div class="f"><label>Email</label><input id="bk-email" placeholder="correo@email.com"></div>
+      <div class="f"><label>Industria <em>/ Industry</em></label><input id="bk-industry" placeholder="Construcción, limpieza, etc."></div>
+      <div class="f"><label>Tiempo operando <em>/ Time in business</em></label><input id="bk-age" placeholder="Ej: 2 años"></div>
+      <div class="f"><label>Ingresos mensuales <em>/ Monthly revenue</em></label><select id="bk-revenue"><option value="">Selecciona...</option><option>Menos de $5,000</option><option>$5,000–$15,000</option><option>$15,000–$30,000</option><option>Más de $30,000</option></select></div>
+    </div>
+    <div class="sec-bar"><span class="sec-es">Cuentas y acceso</span><span class="sec-en">Accounts & access</span></div>
+    <div class="note-gold">Necesitaremos acceso de solo lectura a sus estados de cuenta. / We need read-only access to your statements.</div>
+    <div class="fg">
+      <div class="f"><label>Banco(s) del negocio <em>/ Business bank(s)</em></label><input id="bk-bank" placeholder="Chase, BofA, etc."></div>
+      <div class="f"><label>Número de cuentas <em>/ Bank accounts</em></label><select id="bk-accounts"><option value="">Selecciona...</option><option>1</option><option>2</option><option>3+</option></select></div>
+      <div class="f"><label>Tarjetas de crédito negocio</label><select id="bk-cards"><option value="">Selecciona...</option><option>Ninguna / None</option><option>1</option><option>2</option><option>3+</option></select></div>
+      <div class="f"><label>Transacciones / mes</label><select id="bk-txn"><option value="">Selecciona...</option><option>Menos de 50</option><option>50–150</option><option>150–300</option><option>Más de 300</option></select></div>
+    </div>
+    <div class="f"><label>Plataformas de pago <em>/ Payment platforms</em></label><div class="cw" id="bk-platforms"><span class="chip" onclick="chip(this)">PayPal</span><span class="chip" onclick="chip(this)">Stripe</span><span class="chip" onclick="chip(this)">Square</span><span class="chip" onclick="chip(this)">Venmo Business</span><span class="chip" onclick="chip(this)">Zelle</span><span class="chip" onclick="chip(this)">Cash App</span><span class="chip" onclick="chip(this)">Ninguna</span></div></div>
+    <div class="fg">
+      <div class="f"><label>Software contable actual</label><select id="bk-software"><option value="">Selecciona...</option><option>QuickBooks</option><option>Wave</option><option>Excel/Google Sheets</option><option>Ninguno</option></select></div>
+      <div class="f"><label>¿Desde qué mes? <em>/ Starting month</em></label><input id="bk-start" placeholder="Ej: Enero 2025"></div>
+    </div>
+    <div class="f"><label>Reportes mensuales que necesita</label><div class="cw" id="bk-reports"><span class="chip" onclick="chip(this)">P&L (Income Statement)</span><span class="chip" onclick="chip(this)">Balance Sheet</span><span class="chip" onclick="chip(this)">Flujo de Caja / Cash Flow</span><span class="chip" onclick="chip(this)">Todos / All</span></div></div>
+    <div class="f"><label>¿Para préstamos o crédito?</label><select id="bk-loans"><option value="">Selecciona...</option><option>Sí / Yes</option><option>No</option></select></div>
+    <div class="f"><label>Notas adicionales</label><textarea id="bk-notas" placeholder="Cualquier información adicional..."></textarea></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="window.location.href='index.html'">← Regresar</button><button class="btn btn-primary" onclick="sub('bk')">Enviar formulario →</button></div>
+  </div>
+</div>
+</div>
+
+<!-- CRÉDITO -->
+<div id="screen-credit" class="screen container">
+<div class="form-card">
+  <div class="fhdr"><div class="fhdr-ico">💳</div><div><h2>Reparación de Crédito y Crédito para Negocio</h2><p>Credit Repair & Business Credit · Form CR-01</p></div></div>
+  <div class="fbody">
+    <div class="sec-bar"><span class="sec-es">Información personal</span><span class="sec-en">Personal information</span></div>
+    <div class="fg">
+      <div class="f"><label>Nombre completo <em>/ Full name</em></label><input id="cr-nombre" placeholder="Juan Pérez"></div>
+      <div class="f"><label>Fecha de nacimiento <em>/ Date of birth</em></label><input id="cr-dob" placeholder="MM/DD/YYYY"></div>
+      <div class="f"><label>SSN</label><input id="cr-ssn" placeholder="XXX-XX-XXXX"></div>
+      <div class="f"><label>Teléfono / WhatsApp</label><input id="cr-tel" placeholder="+1 (000) 000-0000"></div>
+      <div class="f"><label>Email</label><input id="cr-email" placeholder="correo@email.com"></div>
+      <div class="f"><label>Estado <em>/ State</em></label><select id="cr-state"><option value="">Selecciona...</option><option>California</option><option>Florida</option><option>Georgia</option><option>Illinois</option><option>Nevada</option><option>New Jersey</option><option>New York</option><option>North Carolina</option><option>Tennessee</option><option>Texas</option><option>Otro</option></select></div>
+      <div class="f" style="grid-column:1/-1"><label>Dirección actual <em>/ Current address</em></label><input id="cr-address" placeholder="123 Main St, City, State, ZIP"></div>
+    </div>
+    <div class="sec-bar"><span class="sec-es">Estado actual del crédito</span><span class="sec-en">Current credit status</span></div>
+    <div class="note-gold">📋 Reporte GRATUITO en AnnualCreditReport.com — las 3 bureaus. / Free 3-bureau report at AnnualCreditReport.com</div>
+    <div class="fg">
+      <div class="f"><label>Score aproximado <em>/ Approximate score</em></label><select id="cr-score"><option value="">Selecciona...</option><option>Menos de 580 (Muy malo)</option><option>580–669 (Regular)</option><option>670–739 (Bueno)</option><option>740–799 (Muy bueno)</option><option>800+ (Excelente)</option><option>No sé / Unknown</option></select></div>
+      <div class="f"><label>¿Tiene reporte de 3 bureaus?</label><select id="cr-report"><option value="">Selecciona...</option><option>Sí / Yes</option><option>No, necesito obtenerlo</option></select></div>
+      <div class="f"><label>Deuda en colecciones (estimado)</label><input id="cr-debt" placeholder="$0.00 o No sé"></div>
+      <div class="f"><label>Número de cuentas en colecciones</label><input id="cr-collections" placeholder="0"></div>
+    </div>
+    <div class="f"><label>Elementos negativos en su reporte <em>/ Negative items</em></label><div class="cw" id="cr-neg"><span class="chip" onclick="chip(this)">Colecciones / Collections</span><span class="chip" onclick="chip(this)">Pagos tardíos / Late payments</span><span class="chip" onclick="chip(this)">Charge-offs</span><span class="chip" onclick="chip(this)">Bancarrota / Bankruptcy</span><span class="chip" onclick="chip(this)">Repossession</span><span class="chip" onclick="chip(this)">Foreclosure</span><span class="chip" onclick="chip(this)">Ninguno / None</span></div></div>
+    <div class="sec-bar"><span class="sec-es">Meta de crédito</span><span class="sec-en">Credit goal</span></div>
+    <div class="fg">
+      <div class="f"><label>¿Por qué quiere mejorar su crédito?</label><select id="cr-goal"><option value="">Selecciona...</option><option>Hipoteca / Mortgage</option><option>Auto</option><option>Tarjetas / Credit cards</option><option>Crédito de negocio</option><option>Apartamento / Apartment</option><option>Otro</option></select></div>
+      <div class="f"><label>Plazo para lograrlo <em>/ Timeline</em></label><select id="cr-timeline"><option value="">Selecciona...</option><option>1–3 meses</option><option>3–6 meses</option><option>6–12 meses</option><option>Sin prisa / No rush</option></select></div>
+      <div class="f"><label>Score objetivo <em>/ Target score</em></label><input id="cr-target" placeholder="Ej: 720"></div>
+    </div>
+    <div class="sec-bar"><span class="sec-es">Crédito para negocio (si aplica)</span><span class="sec-en">Business credit (if applicable)</span></div>
+    <div class="fg">
+      <div class="f"><label>¿Tiene o quiere LLC?</label><select id="cr-llc"><option value="">Selecciona...</option><option>Tengo LLC activa</option><option>Quiero crear una LLC</option><option>No aplica</option></select></div>
+      <div class="f"><label>Nombre de la LLC</label><input id="cr-llcname" placeholder="My Business LLC o N/A"></div>
+      <div class="f"><label>EIN del negocio</label><input id="cr-ein" placeholder="XX-XXXXXXX o N/A"></div>
+    </div>
+    <div class="f"><label>Meta de crédito empresarial</label><div class="cw" id="cr-bizgoal"><span class="chip" onclick="chip(this)">Tarjetas de negocio</span><span class="chip" onclick="chip(this)">Línea de crédito / LOC</span><span class="chip" onclick="chip(this)">Préstamo de negocio</span><span class="chip" onclick="chip(this)">Net-30 vendors</span><span class="chip" onclick="chip(this)">No aplica</span></div></div>
+    <div class="f"><label>Notas adicionales</label><textarea id="cr-notas" placeholder="Cualquier información adicional..."></textarea></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="window.location.href='index.html'">← Regresar</button><button class="btn btn-primary" onclick="sub('credit')">Enviar formulario →</button></div>
+  </div>
+</div>
+</div>
+
+<!-- DIAGNÓSTICO -->
+<div id="screen-diag" class="screen container">
+<div class="form-card">
+  <div class="fhdr"><div class="fhdr-ico">🔍</div><div><h2>Diagnóstico Financiero Gratuito</h2><p>Free Financial Health Assessment · A&H Wealth Group</p></div></div>
+  <div class="fbody">
+    <div class="sec-bar"><span class="sec-es">Información de contacto</span><span class="sec-en">Contact information</span></div>
+    <div class="fg">
+      <div class="f"><label>Nombre completo <em>/ Full name</em></label><input id="dg-nombre" placeholder="Juan Pérez"></div>
+      <div class="f"><label>Edad <em>/ Age</em></label><input id="dg-edad" placeholder="Ej: 35"></div>
+      <div class="f"><label>Teléfono / WhatsApp</label><input id="dg-tel" placeholder="+1 (000) 000-0000"></div>
+      <div class="f"><label>Email</label><input id="dg-email" placeholder="correo@email.com"></div>
+      <div class="f"><label>Estado <em>/ State</em></label><select id="dg-state"><option value="">Selecciona...</option><option>California</option><option>Florida</option><option>Georgia</option><option>Illinois</option><option>Nevada</option><option>New Jersey</option><option>New York</option><option>North Carolina</option><option>Tennessee</option><option>Texas</option><option>Otro</option></select></div>
+    </div>
+    <div class="sec-bar"><span class="sec-es">Finanzas personales</span><span class="sec-en">Personal finances</span></div>
+    <div class="fg">
+      <div class="f"><label>Ingresos mensuales netos <em>/ Monthly net income</em></label><input id="dg-income" placeholder="$0.00"></div>
+      <div class="f"><label>Gastos mensuales totales <em>/ Monthly expenses</em></label><input id="dg-expenses" placeholder="$0.00"></div>
+      <div class="f"><label>Fondo de emergencia <em>/ Emergency fund</em></label><select id="dg-emerg"><option value="">Selecciona...</option><option>No tengo</option><option>Menos de 1 mes</option><option>1–3 meses</option><option>3–6 meses</option><option>Más de 6 meses</option></select></div>
+      <div class="f"><label>¿Tiene presupuesto? <em>/ Do you budget?</em></label><select id="dg-budget"><option value="">Selecciona...</option><option>No</option><option>Informal / mental</option><option>Hoja de cálculo</option><option>App de finanzas</option></select></div>
+    </div>
+    <div class="f"><label>Meta financiera principal <em>/ Main financial goal</em></label><input id="dg-goal" placeholder="Ej: Comprar casa, salir de deudas, ahorrar $10k..."></div>
+    <div class="sec-bar"><span class="sec-es">Situación de impuestos</span><span class="sec-en">Tax situation</span></div>
+    <div class="fg">
+      <div class="f"><label>Tipo de contribuyente <em>/ Taxpayer type</em></label><select id="dg-taxtype"><option value="">Selecciona...</option><option>Empleado W-2</option><option>Trabajador 1099</option><option>Dueño de LLC</option><option>S-Corp / C-Corp</option><option>W-2 + negocio</option></select></div>
+      <div class="f"><label>Ingreso bruto anual <em>/ Gross annual income</em></label><input id="dg-gross" placeholder="$0.00"></div>
+      <div class="f"><label>Resultado fiscal habitual</label><select id="dg-taxres"><option value="">Selecciona...</option><option>Reembolso grande</option><option>Reembolso pequeño</option><option>Aproximadamente cero</option><option>Debo algo</option><option>Debo bastante</option><option>No sé / no he declarado</option></select></div>
+      <div class="f"><label>¿Tiene negocio propio?</label><select id="dg-biz"><option value="">Selecciona...</option><option>No</option><option>Sí, sin entidad</option><option>Sí, LLC</option><option>Sí, S-Corp o Corp</option></select></div>
+    </div>
+    <div class="sec-bar"><span class="sec-es">Crédito</span><span class="sec-en">Credit</span></div>
+    <div class="fg">
+      <div class="f"><label>Score de crédito <em>/ Credit score</em></label><select id="dg-score"><option value="">Selecciona...</option><option>Menos de 580</option><option>580–669</option><option>670–739</option><option>740–799</option><option>800+</option><option>No sé</option></select></div>
+      <div class="f"><label>Utilización de crédito <em>/ Credit utilization</em></label><select id="dg-util"><option value="">Selecciona...</option><option>No tengo tarjetas</option><option>Menos del 10%</option><option>10–30%</option><option>30–60%</option><option>Más del 60%</option></select></div>
+    </div>
+    <div class="f"><label>Elementos negativos <em>/ Negative items</em></label><div class="cw" id="dg-neg"><span class="chip" onclick="chip(this)">Colecciones</span><span class="chip" onclick="chip(this)">Pagos tardíos</span><span class="chip" onclick="chip(this)">Charge-offs</span><span class="chip" onclick="chip(this)">Bancarrota</span><span class="chip" onclick="chip(this)">Ninguno</span></div></div>
+    <div class="sec-bar"><span class="sec-es">Inversiones</span><span class="sec-en">Investments</span></div>
+    <div class="fg">
+      <div class="f"><label>Edad de retiro objetivo <em>/ Target retirement age</em></label><input id="dg-retire" placeholder="Ej: 65"></div>
+      <div class="f"><label>Total invertido hoy <em>/ Total invested</em></label><select id="dg-invested"><option value="">Selecciona...</option><option>$0 — no he empezado</option><option>Menos de $10,000</option><option>$10,000–$50,000</option><option>$50,000–$150,000</option><option>Más de $150,000</option></select></div>
+      <div class="f"><label>¿Cuánto puede invertir/mes? <em>/ Monthly investment</em></label><input id="dg-invmes" placeholder="$0.00"></div>
+      <div class="f"><label>Tolerancia al riesgo <em>/ Risk tolerance</em></label><select id="dg-riesgo"><option value="">Selecciona...</option><option>Muy conservador</option><option>Conservador</option><option>Moderado</option><option>Agresivo</option><option>Muy agresivo</option></select></div>
+    </div>
+    <div class="f"><label>Cuentas de inversión activas</label><div class="cw" id="dg-cuentas"><span class="chip" onclick="chip(this)">401(k)/403(b)</span><span class="chip" onclick="chip(this)">IRA Tradicional</span><span class="chip" onclick="chip(this)">Roth IRA</span><span class="chip" onclick="chip(this)">Brokerage</span><span class="chip" onclick="chip(this)">Real Estate</span><span class="chip" onclick="chip(this)">Crypto</span><span class="chip" onclick="chip(this)">Ninguna</span></div></div>
+    <div class="sec-bar"><span class="sec-es">¿Cómo podemos ayudarle?</span><span class="sec-en">How can we help?</span></div>
+    <div class="f"><label>Servicios de interés</label><div class="cw" id="dg-svcs"><span class="chip" onclick="chip(this)">Impuestos personales</span><span class="chip" onclick="chip(this)">Impuestos corporativos</span><span class="chip" onclick="chip(this)">Bookkeeping</span><span class="chip" onclick="chip(this)">Reparación de crédito</span><span class="chip" onclick="chip(this)">Crédito para negocio</span><span class="chip" onclick="chip(this)">Planificación fiscal</span></div></div>
+    <div class="f"><label>¿Cuál es su mayor preocupación financiera hoy? <em>/ Biggest financial concern</em></label><textarea id="dg-concern" placeholder="Cuéntenos con sus palabras..."></textarea></div>
+    <div class="btn-row"><button class="btn btn-outline" onclick="window.location.href='index.html'">← Regresar</button><button class="btn btn-success" onclick="sub('diag')">Enviar mi diagnóstico →</button></div>
+  </div>
+</div>
+</div>
+
+<!-- SUCCESS -->
+<div id="screen-success" class="screen container" style="max-width: 600px; margin: 6rem auto;">
+  <div class="form-card" style="text-align: center; padding: 4rem 2rem;">
+    <div style="width: 80px; height: 80px; background: rgba(16, 185, 129, 0.1); color: var(--color-success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem; border: 2px solid rgba(16, 185, 129, 0.3);">
+      ✓
+    </div>
+    <h3 style="font-family: var(--font-heading); color: var(--color-primary-dark); font-size: 2rem; margin-bottom: 1rem;">¡Formulario Recibido!</h3>
+    <p style="color: var(--color-gray-dark); font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
+      Un especialista de A&H Wealth Group se comunicará con usted en menos de 24 horas por WhatsApp o email.
+    </p>
+    
+    <div class="note-gold" style="border-radius: var(--radius-sm); border-left: none; border: 2px dashed var(--color-accent-gold); display: inline-block; padding: 1rem 2rem; margin-bottom: 2.5rem; background: var(--color-off-white);">
+      <span style="font-size: 0.9rem; color: var(--color-gray); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">Referencia</span>
+      <div id="suc-ref" style="font-size: 1.25rem; color: var(--color-primary-dark); font-weight: 700;">#001 - TAX-01</div>
+    </div>
+    
+    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+      <a class="btn btn-whatsapp" href="https://wa.me/17867941152?text=Hola,%20acabo%20de%20enviar%20mi%20formulario%20en%20el%20portal%20de%20A%26H" target="_blank" style="width: 100%; justify-content: center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Contactar por WhatsApp
+      </a>
+      <button class="btn btn-outline" style="width: 100%; justify-content: center;" onclick="window.location.href='index.html'">
+          ← Volver al inicio
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="screen-dashboard" class="screen">
+  <div class="dash-hdr">
+    <div><div class="dash-title">Dashboard — A&H Wealth Group</div><div class="dash-sub">Formularios recibidos · All submitted forms</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-outline" style="font-size:12px" onclick="exportCSV()">⬇ Exportar CSV</button>
+      <button class="btn btn-outline" style="font-size:12px;color:var(--color-primary-dark);border-color:var(--color-primary-dark)" onclick="clearAll()">✕ Limpiar</button>
+    </div>
+  </div>
+  <div class="stats-g">
+    <div class="stat gold"><div class="stat-lbl">Total clientes</div><div class="stat-val" id="s-total">0</div><div class="stat-sub">formularios recibidos</div></div>
+    <div class="stat"><div class="stat-lbl">Taxes</div><div class="stat-val" id="s-taxes">0</div><div class="stat-sub">personal + corporativo</div></div>
+    <div class="stat"><div class="stat-lbl">Bookkeeping</div><div class="stat-val" id="s-bk">0</div><div class="stat-sub">clientes</div></div>
+    <div class="stat"><div class="stat-lbl">Crédito + Diagnóstico</div><div class="stat-val" id="s-cr">0</div><div class="stat-sub">leads</div></div>
+  </div>
+  <div class="tbl-card">
+    <div class="tbl-hdr">
+      <div class="tbl-title">Clientes registrados</div>
+      <select class="filter-sel" id="ftype" onchange="renderDash()"><option value="">Todos</option><option value="tax1">Taxes Personal</option><option value="tax2">Taxes Corp.</option><option value="bk">Bookkeeping</option><option value="credit">Crédito</option><option value="diag">Diagnóstico</option></select>
+    </div>
+    <div class="tw"><table><thead><tr><th>#</th><th>Nombre</th><th>Servicio</th><th>Teléfono</th><th>Email</th><th>Estado</th><th>Fecha</th><th>Ver</th></tr></thead><tbody id="ctbody"><tr><td colspan="8" class="empty">No hay clientes aún.</td></tr></tbody></table></div>
+  </div>
+  <div id="dpanel" style="display:none">
+    <div class="dp">
+      <div class="dp-hdr"><div style="font-size:13px;font-weight:600;color:var(--navy)" id="dtitle">Detalle</div><button class="btn btn-outline" style="font-size:12px" onclick="document.getElementById('dpanel').style.display='none'">Cerrar ×</button></div>
+      <div id="dcontent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DB='ah_v3';
+const getDB=()=>{try{return JSON.parse(localStorage.getItem(DB)||'[]')}catch(e){return[]}};
+const saveDB=d=>localStorage.setItem(DB,JSON.stringify(d));
+const META={tax1:{label:'Taxes Personal',badge:'b-navy',form:'TAX-01'},tax2:{label:'Taxes Corp.',badge:'b-gold',form:'TAX-02'},bk:{label:'Bookkeeping',badge:'b-green',form:'BK-01'},credit:{label:'Crédito',badge:'b-navy',form:'CR-01'},diag:{label:'Diagnóstico',badge:'b-gray',form:'DIAG'}};
+const LABELS={nombre:'Nombre',dob:'Fecha nac.',ssn:'SSN/ITIN',tel:'Teléfono',email:'Email',estado:'Estado',estadoCivil:'Estado civil',dependientes:'Dependientes',ingresoIndep:'Ingreso indep.',w2:'Empleo W-2',otrosIngresos:'Otros ingresos',tipoTrabajo:'Tipo trabajo',millas:'Millas',gastos:'Gastos',homeOffice:'Home office',estimatedTax:'Estimated taxes',primeraVez:'Primera vez',yearsSin:'Años sin decl.',deudaIRS:'Deuda IRS',declaracionAnterior:'Decl. anterior',negocio:'Negocio',ein:'EIN',bizState:'Estado registro',fechaApertura:'Apertura',industria:'Industria',entidad:'Entidad',ingresos:'Ingresos',docs:'Documentos',empleados:'Empleados',scorp:'S-Corp',banco:'Banco',cuentas:'Cuentas',tarjetas:'Tarjetas',transacciones:'Transacc/mes',plataformas:'Plataformas',software:'Software',mesInicio:'Mes inicio',reportes:'Reportes',prestamos:'Para préstamos',score:'Score',reporte3b:'Reporte bureaus',deudaColec:'Deuda colec.',numColec:'# Colecciones',negativos:'Negativos',meta:'Meta',plazo:'Plazo',scoreObj:'Score objetivo',llc:'LLC',llcNombre:'Nombre LLC',einNeg:'EIN negocio',metaNeg:'Meta negocio',notas:'Notas',direccion:'Dirección',edad:'Edad',fondoEmerg:'Fondo emerg.',presupuesto:'Presupuesto',metaFin:'Meta financiera',tipoContrib:'Tipo contrib.',ingresosBrutos:'Ingreso bruto',resultadoFiscal:'Resultado fiscal',utilizacion:'Utilización',edadRetiro:'Edad retiro',totalInvertido:'Total invertido',invMes:'Inv./mes',riesgo:'Riesgo',cuentasInv:'Cuentas inv.',svcsInteres:'Servicios',preocupacion:'Preocupación',tiempoOp:'Tiempo op.',ingresosMes:'Ingresos/mes'};
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const target = document.getElementById('screen-'+id);
+  if(target) target.classList.add('active');
+  ['nav-home','nav-dash'].forEach(n=>{
+    const el = document.getElementById(n);
+    if(el) el.classList.remove('active');
+  });
+  if(id==='dashboard'){
+    document.getElementById('nav-dash').classList.add('active');
+    renderDash();
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function chip(el){el.classList.toggle('on')}
+
+function gc(id){
+  const els=document.querySelectorAll('#'+id+' .chip.on');
+  return els.length?Array.from(els).map(c=>c.textContent).join(', '):'—';
+}
+
+function v(id){const el=document.getElementById(id);if(!el)return'—';return el.value||'—';}
+
+const MAPS={
+  tax1:{nombre:'t1-nombre',dob:'t1-dob',ssn:'t1-ssn',tel:'t1-tel',email:'t1-email',estado:'t1-state',estadoCivil:'t1-filing',dependientes:'t1-dep',ingresoIndep:'t1-income',w2:'t1-w2',otrosIngresos:'t1-otherinc',tipoTrabajo:'t1-tipo',millas:'t1-miles',gastos:'t1-gastos',homeOffice:'t1-homeoffice',estimatedTax:'t1-estimated',primeraVez:'t1-primera',yearsSin:'t1-unfiled',deudaIRS:'t1-irs',declaracionAnterior:'t1-prior',notas:'t1-notas'},
+  tax2:{nombre:'t2-owner',ssn:'t2-ssn',tel:'t2-tel',email:'t2-email',estado:'t2-state',negocio:'t2-bizname',ein:'t2-ein',bizState:'t2-bizstate',fechaApertura:'t2-started',industria:'t2-industry',entidad:'t2-entity',ingresos:'t2-revenue',gastos:'t2-expenses',docs:'t2-docs',empleados:'t2-emp',estimatedTax:'t2-est',scorp:'t2-scorp',deudaIRS:'t2-irs',notas:'t2-notas'},
+  bk:{nombre:'bk-owner',negocio:'bk-bizname',ein:'bk-ein',tel:'bk-tel',email:'bk-email',industria:'bk-industry',tiempoOp:'bk-age',ingresosMes:'bk-revenue',banco:'bk-bank',cuentas:'bk-accounts',tarjetas:'bk-cards',transacciones:'bk-txn',plataformas:'bk-platforms',software:'bk-software',mesInicio:'bk-start',reportes:'bk-reports',prestamos:'bk-loans',notas:'bk-notas'},
+  credit:{nombre:'cr-nombre',dob:'cr-dob',ssn:'cr-ssn',tel:'cr-tel',email:'cr-email',estado:'cr-state',direccion:'cr-address',score:'cr-score',reporte3b:'cr-report',deudaColec:'cr-debt',numColec:'cr-collections',negativos:'cr-neg',meta:'cr-goal',plazo:'cr-timeline',scoreObj:'cr-target',llc:'cr-llc',llcNombre:'cr-llcname',einNeg:'cr-ein',metaNeg:'cr-bizgoal',notas:'cr-notas'},
+  diag:{nombre:'dg-nombre',edad:'dg-edad',tel:'dg-tel',email:'dg-email',estado:'dg-state',ingresos:'dg-income',gastos:'dg-expenses',fondoEmerg:'dg-emerg',presupuesto:'dg-budget',metaFin:'dg-goal',tipoContrib:'dg-taxtype',ingresosBrutos:'dg-gross',resultadoFiscal:'dg-taxres',negocio:'dg-biz',score:'dg-score',utilizacion:'dg-util',negativos:'dg-neg',edadRetiro:'dg-retire',totalInvertido:'dg-invested',invMes:'dg-invmes',riesgo:'dg-riesgo',cuentasInv:'dg-cuentas',svcsInteres:'dg-svcs',preocupacion:'dg-concern'}
+};
+
+const CHIP_IDS=new Set(['t1-filing','t1-otherinc','t1-tipo','t2-entity','t2-docs','bk-platforms','bk-reports','cr-neg','cr-bizgoal','dg-neg','dg-cuentas','dg-svcs']);
+
+function sub(type){
+  const map=MAPS[type]||{};
+  const data={type,fecha:new Date().toLocaleDateString('es-US'),ts:Date.now()};
+  Object.entries(map).forEach(([key,id])=>{
+    data[key]=CHIP_IDS.has(id)?gc(id):v(id);
+  });
+  const db=getDB();
+  const nid=db.length+1;
+  db.unshift({id:nid,...data});
+  saveDB(db);
+  const m=META[type]||{form:'FORM'};
+  document.getElementById('suc-ref').textContent='Referencia #'+String(nid).padStart(3,'0')+' — '+m.form;
+  showScreen('success');
+}
+
+function renderDash(){
+  const db=getDB();
+  const ft=document.getElementById('ftype').value;
+  const fl=ft?db.filter(c=>c.type===ft):db;
+  document.getElementById('s-total').textContent=db.length;
+  document.getElementById('s-taxes').textContent=db.filter(c=>c.type==='tax1'||c.type==='tax2').length;
+  document.getElementById('s-bk').textContent=db.filter(c=>c.type==='bk').length;
+  document.getElementById('s-cr').textContent=db.filter(c=>c.type==='credit'||c.type==='diag').length;
+  const tb=document.getElementById('ctbody');
+  if(!fl.length){tb.innerHTML='<tr><td colspan="8" class="empty">No hay clientes todavía.</td></tr>';return;}
+  tb.innerHTML=fl.map(c=>{
+    const m=META[c.type]||{label:'—',badge:'b-gray'};
+    return`<tr><td style="color:var(--text3);font-size:11px">#${String(c.id).padStart(3,'0')}</td><td style="font-weight:500">${c.nombre||'—'}</td><td><span class="badge ${m.badge}">${m.label}</span></td><td>${c.tel||'—'}</td><td style="font-size:12px">${c.email||'—'}</td><td>${c.estado||'—'}</td><td style="font-size:11px;color:var(--text3)">${c.fecha||'—'}</td><td><button class="tbl-btn" onclick="showDetail(${c.ts})">Ver →</button></td></tr>`;
+  }).join('');
+}
+
+function showDetail(ts){
+  const c=getDB().find(x=>x.ts===ts);
+  if(!c)return;
+  const skip=new Set(['id','ts','fecha','type']);
+  const m=META[c.type]||{label:'—',form:'—'};
+  document.getElementById('dtitle').innerHTML=`<span class="badge ${m.badge}" style="margin-right:8px">${m.label}</span>${c.nombre||'Cliente'} — #${String(c.id).padStart(3,'0')} · ${c.fecha}`;
+  document.getElementById('dcontent').innerHTML=Object.entries(c).filter(([k,val])=>!skip.has(k)&&val&&val!=='—').map(([k,val])=>`<div class="dr"><div class="dk">${LABELS[k]||k}</div><div class="dv">${val}</div></div>`).join('');
+  const p=document.getElementById('dpanel');
+  p.style.display='block';
+  p.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function exportCSV(){
+  const db=getDB();
+  if(!db.length){alert('No hay datos para exportar.');return;}
+  const keys=[...new Set(db.flatMap(c=>Object.keys(c)))];
+  const rows=[keys.join(','),...db.map(c=>keys.map(k=>`"${(c[k]||'').toString().replace(/"/g,'""')}"`).join(','))];
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'}));
+  a.download='AH_Wealth_Clientes_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+function clearAll(){
+  if(confirm('¿Confirma eliminar todos los datos? No se puede deshacer.')){
+    localStorage.removeItem(DB);
+    renderDash();
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const service = urlParams.get('service');
+  if (service) {
+    showScreen(service);
+  } else {
+    // Si no se especifica servicio, nos aseguramos que cargue un form o redireccionarlo a inicio.
+    // Aquí redirigimos al main (index.html) por defecto si caen aquí por error sin servicio.
+    window.location.href = 'index.html';
+  }
+});
+</script>
+<footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="/logo.jpg" alt="A&H Wealth Group" style="height: 80px; margin-bottom: 1rem;">
+                    <p style="color: var(--color-gray-light); line-height: 1.7;">
+                        Protegiendo su futuro financiero con experiencia, confianza y soluciones personalizadas.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Servicios</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#servicios">Consultoría Financiera</a></li>
+                        <li><a href="index.html#servicios">Preparación de Impuestos</a></li>
+                        <li><a href="index.html#servicios">Seguros de Vida</a></li>
+                        <li><a href="index.html#servicios">Reparación de Crédito</a></li>
+                        <li><a href="index.html#servicios">Planificación Financiera</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Empresa</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#inicio">Inicio</a></li>
+                        <li><a href="index.html#proceso">Cómo Trabajamos</a></li>
+                        <li><a href="index.html#clientes">Nuestros Clientes</a></li>
+                        <li><a href="index.html#faq">Preguntas Frecuentes</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Ubicaciones</h3>
+                    <ul class="footer-links">
+                        <li style="color: var(--color-gray-light);">Miami, Florida</li>
+                        <li style="color: var(--color-gray-light);">Nashville, Tennessee</li>
+                    </ul>
+                    <h3 style="margin-top: 1.5rem;">Síguenos</h3>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/profile.php?id=61578804441937" target="_blank"
+                            style="color: var(--color-accent-gold); font-size: 1.5rem;" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/anibaltaxes/" target="_blank"
+                            style="color: var(--color-accent-gold); font-size: 1.5rem;" aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@anibalhernandez1991?lang=en" target="_blank"
+                            style="color: var(--color-accent-gold); font-size: 1.5rem;" aria-label="TikTok">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.6z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 A&H Wealth Group LLC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>\n</body>
+</html>
