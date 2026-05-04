@@ -3,7 +3,12 @@
 // ========================================
 
 // Wait for DOM to be fully loaded
+import { initCookieConsent } from './cookieConsent.js';
+
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize cookie consent
+    initCookieConsent();
+
 
     // ========================================
     // MOBILE MENU TOGGLE

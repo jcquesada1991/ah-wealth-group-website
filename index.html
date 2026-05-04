@@ -8,7 +8,44 @@
         content="A&H Wealth Group LLC - Servicios financieros profesionales en Miami y Nashville. Consultoría financiera, preparación de impuestos, seguros de vida, reparación de crédito y planificación financiera.">
     <meta name="keywords"
         content="servicios financieros, Miami, Nashville, seguros de vida, reparación de crédito, planificación financiera, impuestos">
+    
+    <!-- Meta tags SEO / Open Graph / Twitter -->
+    <meta property="og:title" content="A&H Wealth Group LLC - Protección Financiera y Organización Patrimonial">
+    <meta property="og:description" content="Servicios financieros profesionales en Miami y Nashville. Consultoría, impuestos, seguros, crédito y planificación financiera.">
+    <meta property="og:image" content="https://ahwealthgroup.com/logo.jpg">
+    <meta property="og:url" content="https://ahwealthgroup.com/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <title>A&H Wealth Group LLC - Protección Financiera y Organización Patrimonial</title>
+    
+    <!-- Schema JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["LocalBusiness", "FinancialService"],
+      "name": "A&H Wealth Group LLC",
+      "image": "https://ahwealthgroup.com/logo.jpg",
+      "description": "Servicios financieros profesionales en Miami y Nashville.",
+      "url": "https://ahwealthgroup.com/",
+      "telephone": "+1-786-794-1152",
+      "email": "ahwealthgroup25@gmail.com",
+      "address": [
+        {
+          "@type": "PostalAddress",
+          "addressLocality": "Miami",
+          "addressRegion": "FL",
+          "addressCountry": "US"
+        },
+        {
+          "@type": "PostalAddress",
+          "addressLocality": "Nashville",
+          "addressRegion": "TN",
+          "addressCountry": "US"
+        }
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="/src/style.css">
     <link rel="icon" type="image/jpeg" href="/logo.jpg">
 </head>
@@ -488,7 +525,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <img src="/logo.jpg" alt="A&H Wealth Group" style="height: 80px; margin-bottom: 1rem;">
+                    <img src="/logo.jpg" alt="A&H Wealth Group Logo" loading="lazy" decoding="async" style="height: 80px; margin-bottom: 1rem;">
                     <p style="color: var(--color-gray-light); line-height: 1.7;">
                         Protegiendo su futuro financiero con experiencia, confianza y soluciones personalizadas.
                     </p>
@@ -513,6 +550,8 @@
                         <li><a href="#clientes">Nuestros Clientes</a></li>
                         <li><a href="#faq">Preguntas Frecuentes</a></li>
                         <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="/privacy.html">Política de Privacidad</a></li>
+                        <li><a href="/terms.html">Términos de Servicio</a></li>
                     </ul>
                 </div>
 
@@ -557,6 +596,32 @@
             </div>
         </div>
     </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-banner" class="cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--color-primary-dark); color: white; padding: 1rem; z-index: 10000; box-shadow: 0 -2px 10px rgba(0,0,0,0.3); flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem; text-align: center;">
+        <div>
+            <p style="margin: 0; font-size: 0.9rem;">
+                Utilizamos cookies para mejorar su experiencia, analizar el tráfico y personalizar el contenido. 
+                Al continuar navegando, usted acepta nuestra 
+                <a href="/privacy.html" style="color: var(--color-accent-gold); text-decoration: underline;">Política de Privacidad</a> y 
+                <a href="/terms.html" style="color: var(--color-accent-gold); text-decoration: underline;">Términos de Servicio</a>.
+            </p>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <button id="btn-accept-cookies" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Aceptar</button>
+            <button id="btn-decline-cookies" class="btn btn-secondary" style="padding: 0.5rem 1.5rem; font-size: 0.9rem; background: transparent; border: 1px solid white; color: white;">Rechazar</button>
+        </div>
+    </div>
+    
+    <style>
+        @media (min-width: 768px) {
+            #cookie-banner {
+                flex-direction: row !important;
+                text-align: left !important;
+                padding: 1rem 2rem !important;
+            }
+        }
+    </style>
 
     <script type="module" src="/src/main.js"></script>
 </body>
