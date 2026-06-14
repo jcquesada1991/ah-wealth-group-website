@@ -35,70 +35,121 @@
 <link rel="stylesheet" href="/assets/css/components.css">
 
 <style>
-/* ---------- Hub link-in-bio ---------- */
+/* =========================================================
+   Hub link-in-bio · A&H Wealth Group
+   Base NAVY + dorado · mobile-first
+   ========================================================= */
 body{
-  background-color:var(--forest);
+  background-color:#0A1628;
   background-image:
-    radial-gradient(1100px 520px at 50% -8%, rgba(212,175,55,.12), transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='3' cy='3' r='1' fill='%23D4AF37' fill-opacity='0.05'/%3E%3C/svg%3E");
+    radial-gradient(900px 480px at 50% -10%, rgba(212,175,55,.16), transparent 60%),
+    radial-gradient(700px 380px at 100% 10%, rgba(255,255,255,.05), transparent 55%),
+    linear-gradient(180deg, #1A2942 0%, #0A1628 48%, #07101F 100%);
 }
-.hub{max-width:520px; margin-inline:auto; padding:clamp(1.75rem,5vw,2.75rem) clamp(1rem,5vw,1.4rem) 6.5rem; text-align:center}
-
-/* Encabezado */
-.brand-logo{margin:0 0 .6rem; line-height:0}
-.brand-logo img{width:min(280px,68%); height:auto; margin:0 auto; display:block;
-  filter:drop-shadow(0 8px 24px rgba(0,0,0,.28))}
-.role{color:var(--gold); font-weight:600; font-size:.98rem; margin:0 0 .7rem; line-height:1.4}
-.tagline{color:var(--cream); opacity:.92; font-size:1.02rem; max-width:34ch; margin:0 auto 1.4rem}
-.hero-cta{margin-bottom:2rem}
-
-/* Tarjetas de servicio */
-.cards{display:grid; gap:1rem; text-align:left}
-.s-card{
-  background:var(--bg); border:1px solid #e9e6db; border-radius:var(--radius);
-  box-shadow:var(--shadow); padding:1.25rem;
-  display:grid; grid-template-columns:58px 1fr; gap:.5rem 1rem; align-items:start;
+.hub{
+  max-width:540px; margin-inline:auto;
+  padding:clamp(1.75rem,5vw,2.6rem) clamp(1rem,5vw,1.4rem) 5rem;
+  text-align:center;
 }
-.s-card.featured{border:2px solid var(--gold); position:relative}
-.s-ic{width:58px; height:58px; grid-row:1 / span 3}
-.s-card h2{font-size:1.22rem; margin:0 0 .25rem}
-.s-card p{color:var(--muted); font-size:.95rem; margin:0 0 .9rem}
-.s-card .price{display:block; margin-top:.35rem; color:var(--gold-deep); font-weight:600; font-size:.9rem}
-.s-card .btn{grid-column:1 / -1; width:100%}
-.s-card .badge{position:absolute; top:-13px; right:1.25rem; left:auto}
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
 
-/* Pie */
-.hub-foot{margin-top:2.25rem; color:#cfe0d6}
-.foot-ic{width:54px; height:54px; margin:0 auto .75rem}
-.social{display:flex; justify-content:center; gap:1.1rem; margin:0 0 1rem}
+/* ---------- Encabezado: foto + redes ---------- */
+.brand-photo{ margin-bottom:.85rem; }
+.brand-photo img{
+  width:100%; height:auto; aspect-ratio:3/2; display:block;
+  border-radius:20px; object-fit:cover; object-position:50% 35%;
+  border:1px solid rgba(212,175,55,.45);
+  box-shadow:0 16px 38px rgba(0,0,0,.42);
+}
+.mini-name{ margin:.2rem 0 .1rem; font-family:"Playfair Display",serif; font-weight:700;
+  font-size:1.32rem; line-height:1.15; color:var(--cream); }
+.mini-role{ margin:0 0 .9rem; font-size:.82rem; font-weight:600; letter-spacing:.02em;
+  color:var(--gold); }
+.social{ display:flex; justify-content:center; gap:.7rem; margin:0; }
 .social a{
   width:46px; height:46px; border-radius:50%;
-  border:2px solid var(--gold); color:var(--cream);
-  display:grid; place-items:center; transition:background .2s ease, color .2s ease;
+  display:grid; place-items:center;
+  color:var(--cream); background:rgba(255,255,255,.04);
+  border:2px solid rgba(212,175,55,.75);
+  transition:background .2s ease, color .2s ease, transform .2s ease;
 }
-.social a:hover{background:var(--gold); color:var(--forest-700)}
-.social svg{width:22px; height:22px}
-.foot-loc{display:inline-flex; align-items:center; gap:.4rem; font-size:.95rem; font-weight:500}
-.foot-legal{margin-top:1.25rem; font-size:.76rem; color:#a9c0b4; line-height:1.6}
+.social a:hover{ background:var(--gold); color:#0A1628; transform:translateY(-2px); }
+.social a:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+.social svg{ width:22px; height:22px; }
 
-/* CTA fija inferior (verde WhatsApp) */
-.sticky-cta{
-  position:fixed; left:0; right:0; bottom:0; z-index:60;
-  padding:.7rem clamp(1rem,4vw,1.4rem) calc(.7rem + env(safe-area-inset-bottom,0px));
-  background:linear-gradient(to top, var(--forest) 62%, rgba(10,22,40,0));
-  display:flex; justify-content:center;
+/* ---------- Servicios: dark glass link list ---------- */
+.s-list{ display:flex; flex-direction:column; gap:.7rem; margin-top:1.4rem; text-align:left; }
+.s-link{
+  display:flex; align-items:center; gap:.9rem;
+  padding:.95rem 1.05rem; border-radius:16px;
+  color:var(--cream); text-decoration:none;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(212,175,55,.28);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
 }
-.sticky-cta .wa-cta{width:100%; max-width:520px}
+.s-link:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.075);
+  border-color:rgba(212,175,55,.55);
+  box-shadow:0 12px 28px rgba(0,0,0,.34);
+}
+.s-link:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+.s-link .s-ic{ width:40px; height:40px; flex:none; }
+.s-body{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:.15rem; }
+.s-head{ display:flex; align-items:center; gap:.5rem; }
+.s-title{ flex:1 1 auto; min-width:0; font-weight:700; font-size:1.02rem; line-height:1.25;
+  color:#FBF6EA; letter-spacing:-.01em; }
+.s-desc{ font-size:.86rem; line-height:1.45; color:rgba(244,236,216,.74); }
+.s-desc .price{ display:block; margin-top:.2rem; color:var(--gold); font-weight:700; }
+.s-arrow{ flex:none; color:var(--gold); font-size:1.35rem; line-height:1; opacity:.85;
+  transition:transform .16s ease, opacity .16s ease; }
+.s-link:hover .s-arrow{ transform:translateX(3px); opacity:1; }
 
-/* CTA WhatsApp (verde EXCLUSIVO) */
-.wa-cta{
-  display:inline-flex; align-items:center; justify-content:center; gap:.55rem;
-  background:var(--wa-green); color:#fff; text-decoration:none; font-weight:600;
-  padding:.95rem 1.25rem; border-radius:var(--radius-sm); font-size:1.02rem;
-  box-shadow:0 8px 20px rgba(29,168,81,.28); transition:background .2s ease;
+/* Servicio destacado */
+.s-link.featured{
+  border:2px solid var(--gold);
+  background:linear-gradient(180deg, rgba(212,175,55,.15), rgba(255,255,255,.05));
+  box-shadow:0 0 0 4px rgba(212,175,55,.08), 0 12px 30px rgba(0,0,0,.3);
 }
-.wa-cta:hover{background:var(--wa-green-d)}
-.wa-cta svg{width:1.3em; height:1.3em; flex:none}
+.badge{
+  flex:none; margin-left:auto; display:inline-block;
+  padding:.14rem .55rem; border-radius:999px;
+  font-size:.66rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+  background:linear-gradient(135deg,#D4AF37,#f0d984); color:#0A1628;
+}
+
+/* ---------- Pie ---------- */
+.hub-foot{ margin-top:2rem; color:rgba(244,236,216,.82); }
+.foot-loc{ display:inline-flex; align-items:center; gap:.4rem; font-size:.95rem; font-weight:500; }
+.foot-legal{ margin-top:1.1rem; font-size:.76rem; line-height:1.6; color:rgba(226,220,206,.62); }
+
+/* ---------- WhatsApp flotante (verde EXCLUSIVO) ---------- */
+.wa-fab{
+  position:fixed; right:18px; z-index:60;
+  bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  width:60px; height:60px; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--wa-green); color:#fff;
+  box-shadow:0 12px 32px rgba(0,0,0,.36);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.wa-fab:hover{ transform:scale(1.06); box-shadow:0 14px 34px rgba(0,0,0,.4); }
+.wa-fab:active{ transform:scale(.97); }
+.wa-fab:focus-visible{ outline:3px solid #fff; outline-offset:3px; }
+.wa-fab svg{ width:32px; height:32px; }
+
+/* ---------- Móvil ---------- */
+@media (max-width:420px){
+  .hub{ padding-top:1.35rem; }
+  .s-list{ gap:.55rem; }
+  .s-link{ padding:.85rem .9rem; gap:.75rem; }
+  .s-link .s-ic{ width:34px; height:34px; }
+  .s-title{ font-size:.98rem; }
+}
 </style>
 </head>
 <body>
@@ -108,73 +159,13 @@ body{
 
   <!-- ENCABEZADO -->
   <header>
-    <h1 class="brand-logo reveal">
-      <picture><source type="image/webp" srcset="/assets/img/logo.webp"><img src="/assets/img/logo.png" alt="A&H Wealth Group" width="300" height="300"></picture>
-    </h1>
-    <p class="role reveal">Aníbal Hernández · Impuestos, Bookkeeping y Seguros de Vida</p>
-    <div class="hero-cta reveal">
-      <a class="wa-cta" href="https://wa.me/17867941152?text=Hola%20An%C3%ADbal%2C%20quiero%20agendar%20mi%20diagn%C3%B3stico%20financiero%20gratis.">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.1.55 4.06 1.6 5.83L2 22l4.4-1.15a9.9 9.9 0 0 0 5.64 1.76h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm5.8 14.16c-.25.69-1.45 1.32-2 1.36-.51.04-.99.22-3.34-.7-2.83-1.11-4.62-4-4.76-4.18-.14-.18-1.13-1.5-1.13-2.86s.71-2.03.97-2.31c.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17 0 .4-.06.62.47.25.6.85 2.06.92 2.21.07.14.12.31.02.5-.09.18-.14.3-.28.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.18.69-.8.87-1.08.18-.28.37-.23.62-.14.25.09 1.61.76 1.89.9.28.14.46.21.53.32.07.11.07.65-.18 1.34Z"/></svg>
-        Diagnóstico gratis por WhatsApp
-      </a>
+    <h1 class="sr-only">A&amp;H Wealth Group · Aníbal Hernández</h1>
+    <div class="brand-photo reveal">
+      <picture><source type="image/webp" srcset="/assets/img/anibal-foto.webp"><img src="/assets/img/anibal-foto.jpg" alt="Aníbal Hernández — A&amp;H Wealth Group" width="1080" height="720" loading="eager"></picture>
     </div>
-  </header>
-
-  <!-- TARJETAS -->
-  <div class="cards">
-
-    <!-- 1 · Destacada -->
-    <article class="s-card featured reveal">
-      <span class="badge">Gratis</span>
-      <img class="s-ic" src="/assets/img/icon-logros.svg" alt="" loading="lazy">
-      <h2>Diagnóstico Financiero Gratis</h2>
-      <p>15 minutos que pueden ahorrarte miles. Sin costo ni compromiso.</p>
-      <a class="btn btn-primary" href="https://wa.me/17867941152?text=Hola%20An%C3%ADbal%2C%20quiero%20agendar%20mi%20diagn%C3%B3stico%20financiero%20gratis.">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.1.55 4.06 1.6 5.83L2 22l4.4-1.15a9.9 9.9 0 0 0 5.64 1.76h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm5.8 14.16c-.25.69-1.45 1.32-2 1.36-.51.04-.99.22-3.34-.7-2.83-1.11-4.62-4-4.76-4.18-.14-.18-1.13-1.5-1.13-2.86s.71-2.03.97-2.31c.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17 0 .4-.06.62.47.25.6.85 2.06.92 2.21.07.14.12.31.02.5-.09.18-.14.3-.28.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.18.69-.8.87-1.08.18-.28.37-.23.62-.14.25.09 1.61.76 1.89.9.28.14.46.21.53.32.07.11.07.65-.18 1.34Z"/></svg>
-        Agendar mi diagnóstico
-      </a>
-    </article>
-
-    <!-- 2 · Impuestos -->
-    <article class="s-card reveal">
-      <img class="s-ic" src="/assets/img/icon-1040.svg" alt="" loading="lazy">
-      <h2>Impuestos Personales y de Negocio</h2>
-      <p>Maximiza tu reembolso y paga solo lo justo.
-        <span class="price">Personal desde $250 · Negocio desde $450</span></p>
-      <a class="btn btn-forest" href="/impuestos/">Preparar mis impuestos</a>
-    </article>
-
-    <!-- 3 · Bookkeeping -->
-    <article class="s-card reveal">
-      <img class="s-ic" src="/assets/img/icon-bookkeeping.svg" alt="" loading="lazy">
-      <h2>Bookkeeping Mensual</h2>
-      <p>Tus libros al día y reportes claros para decidir mejor.
-        <span class="price">Desde $350/mes</span></p>
-      <a class="btn btn-forest" href="/bookkeeping/">Ordenar mi bookkeeping</a>
-    </article>
-
-    <!-- 4 · Crédito -->
-    <article class="s-card reveal">
-      <img class="s-ic" src="/assets/img/icon-credito.svg" alt="" loading="lazy">
-      <h2>Reparación de Crédito</h2>
-      <p>Elimina lo negativo y construye crédito sólido.
-        <span class="price">Desde $249</span></p>
-      <a class="btn btn-forest" href="/credito/">Mejorar mi crédito</a>
-    </article>
-
-    <!-- 5 · Seguro de vida -->
-    <article class="s-card reveal">
-      <img class="s-ic" src="/assets/img/icon-seguros.svg" alt="" loading="lazy">
-      <h2>Seguro de Vida en Español</h2>
-      <p>Protege a tu familia, pase lo que pase. Te lo explico sin tecnicismos.</p>
-      <a class="btn btn-forest" href="/seguro-de-vida/">Cotizar mi seguro</a>
-    </article>
-
-  </div>
-
-  <!-- PIE -->
-  <footer class="hub-foot reveal">
-    <nav class="social" aria-label="Redes sociales">
+    <p class="mini-name reveal">Aníbal Hernández</p>
+    <p class="mini-role reveal">Impuestos · Bookkeeping · Crédito · Seguro de Vida</p>
+    <nav class="social reveal" aria-label="Redes sociales">
       <a href="https://www.instagram.com/anibaltaxes/" aria-label="Instagram" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       </a>
@@ -185,6 +176,68 @@ body{
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.1.55 4.06 1.6 5.83L2 22l4.4-1.15a9.9 9.9 0 0 0 5.64 1.76h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm5.8 14.16c-.25.69-1.45 1.32-2 1.36-.51.04-.99.22-3.34-.7-2.83-1.11-4.62-4-4.76-4.18-.14-.18-1.13-1.5-1.13-2.86s.71-2.03.97-2.31c.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17 0 .4-.06.62.47.25.6.85 2.06.92 2.21.07.14.12.31.02.5-.09.18-.14.3-.28.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.18.69-.8.87-1.08.18-.28.37-.23.62-.14.25.09 1.61.76 1.89.9.28.14.46.21.53.32.07.11.07.65-.18 1.34Z"/></svg>
       </a>
     </nav>
+  </header>
+
+  <!-- SERVICIOS · link list premium -->
+  <nav class="s-list" aria-label="Servicios">
+
+    <!-- 1 · Destacada → WhatsApp -->
+    <a class="s-link featured reveal" href="https://wa.me/17867941152?text=Hola%20An%C3%ADbal%2C%20quiero%20agendar%20mi%20diagn%C3%B3stico%20financiero%20gratis.">
+      <img class="s-ic" src="/assets/img/icon-logros.svg" alt="" loading="lazy">
+      <span class="s-body">
+        <span class="s-head"><span class="s-title">Diagnóstico Financiero Gratis</span><span class="badge">Gratis</span></span>
+        <span class="s-desc">Revisamos tu situación y te digo qué servicio realmente necesitas. Sin costo ni compromiso.</span>
+      </span>
+      <span class="s-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <!-- 2 · Impuestos -->
+    <a class="s-link reveal" href="/impuestos/">
+      <img class="s-ic" src="/assets/img/icon-1040.svg" alt="" loading="lazy">
+      <span class="s-body">
+        <span class="s-head"><span class="s-title">Impuestos Personales y de Negocio</span></span>
+        <span class="s-desc">Planifica antes, deduce más, paga lo justo.
+          <span class="price">Personal desde $250 · Negocio desde $450</span></span>
+      </span>
+      <span class="s-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <!-- 3 · Bookkeeping -->
+    <a class="s-link reveal" href="/bookkeeping/">
+      <img class="s-ic" src="/assets/img/icon-bookkeeping.svg" alt="" loading="lazy">
+      <span class="s-body">
+        <span class="s-head"><span class="s-title">Bookkeeping Mensual</span></span>
+        <span class="s-desc">Tus libros al día y reportes claros para decidir mejor.
+          <span class="price">Desde $350/mes</span></span>
+      </span>
+      <span class="s-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <!-- 4 · Crédito -->
+    <a class="s-link reveal" href="/credito/">
+      <img class="s-ic" src="/assets/img/icon-credito.svg" alt="" loading="lazy">
+      <span class="s-body">
+        <span class="s-head"><span class="s-title">Reparación de Crédito</span></span>
+        <span class="s-desc">Elimina lo negativo y construye crédito sólido.
+          <span class="price">Desde $249</span></span>
+      </span>
+      <span class="s-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <!-- 5 · Seguro de vida -->
+    <a class="s-link reveal" href="/seguro-de-vida/">
+      <img class="s-ic" src="/assets/img/icon-seguros.svg" alt="" loading="lazy">
+      <span class="s-body">
+        <span class="s-head"><span class="s-title">Seguro de Vida en Español</span></span>
+        <span class="s-desc">Protege a tu familia, pase lo que pase. Te lo explico sin tecnicismos.</span>
+      </span>
+      <span class="s-arrow" aria-hidden="true">→</span>
+    </a>
+
+  </nav>
+
+  <!-- PIE -->
+  <footer class="hub-foot reveal">
     <p class="foot-loc">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="var(--gold)" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
       Miami, FL · Nashville, TN
@@ -193,13 +246,10 @@ body{
   </footer>
 </main>
 
-<!-- CTA FIJA -->
-<div class="sticky-cta">
-  <a class="wa-cta" href="https://wa.me/17867941152?text=Hola%20An%C3%ADbal%2C%20quiero%20agendar%20mi%20diagn%C3%B3stico%20financiero%20gratis.">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.1.55 4.06 1.6 5.83L2 22l4.4-1.15a9.9 9.9 0 0 0 5.64 1.76h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm5.8 14.16c-.25.69-1.45 1.32-2 1.36-.51.04-.99.22-3.34-.7-2.83-1.11-4.62-4-4.76-4.18-.14-.18-1.13-1.5-1.13-2.86s.71-2.03.97-2.31c.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17 0 .4-.06.62.47.25.6.85 2.06.92 2.21.07.14.12.31.02.5-.09.18-.14.3-.28.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.18.69-.8.87-1.08.18-.28.37-.23.62-.14.25.09 1.61.76 1.89.9.28.14.46.21.53.32.07.11.07.65-.18 1.34Z"/></svg>
-    Diagnóstico gratis por WhatsApp
-  </a>
-</div>
+<!-- Botón flotante redondo de WhatsApp -->
+<a class="wa-fab" href="https://wa.me/17867941152?text=Hola%20An%C3%ADbal%2C%20quiero%20agendar%20mi%20diagn%C3%B3stico%20financiero%20gratis." aria-label="Diagnóstico gratis por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.1.55 4.06 1.6 5.83L2 22l4.4-1.15a9.9 9.9 0 0 0 5.64 1.76h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2Zm5.8 14.16c-.25.69-1.45 1.32-2 1.36-.51.04-.99.22-3.34-.7-2.83-1.11-4.62-4-4.76-4.18-.14-.18-1.13-1.5-1.13-2.86s.71-2.03.97-2.31c.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17 0 .4-.06.62.47.25.6.85 2.06.92 2.21.07.14.12.31.02.5-.09.18-.14.3-.28.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.18.69-.8.87-1.08.18-.28.37-.23.62-.14.25.09 1.61.76 1.89.9.28.14.46.21.53.32.07.11.07.65-.18 1.34Z"/></svg>
+</a>
 
 <!-- schema.org -->
 <script type="application/ld+json">
