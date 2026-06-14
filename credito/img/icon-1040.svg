@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Formulario 1040 de impuestos">
+  <circle cx="60" cy="60" r="56" fill="#0A1628" stroke="#D4AF37" stroke-width="3"/>
+  <!-- hoja del formulario -->
+  <path d="M40 30h28l12 12v48a2 2 0 0 1-2 2H40a2 2 0 0 1-2-2V32a2 2 0 0 1 2-2z" fill="#F4ECD8"/>
+  <!-- esquina doblada -->
+  <path d="M68 30l12 12H70a2 2 0 0 1-2-2z" fill="#D4AF37"/>
+  <!-- banda de encabezado con 1040 -->
+  <rect x="44" y="46" width="32" height="11" rx="2" fill="#0A1628"/>
+  <text x="60" y="55" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="9" font-weight="700" fill="#D4AF37">1040</text>
+  <!-- líneas del formulario -->
+  <rect x="44" y="64" width="32" height="3" rx="1.5" fill="#0A1628" opacity=".35"/>
+  <rect x="44" y="71" width="32" height="3" rx="1.5" fill="#0A1628" opacity=".35"/>
+  <rect x="44" y="78" width="20" height="3" rx="1.5" fill="#0A1628" opacity=".35"/>
+  <!-- check dorado de "presentado" -->
+  <path d="M67 79.5l3 3 6-6.5" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

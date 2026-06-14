@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Seguro de vida">
+  <circle cx="60" cy="60" r="56" fill="#0A1628" stroke="#D4AF37" stroke-width="3"/>
+  <!-- escudo dorado -->
+  <path d="M60 34l20 7v15c0 14-9 23-20 28-11-5-20-14-20-28V41z" fill="#D4AF37"/>
+  <!-- corazón calado (verde) -->
+  <path d="M60 72c-6-4.5-11-8.6-11-14a5.6 5.6 0 0 1 11-1.8A5.6 5.6 0 0 1 71 58c0 5.4-5 9.5-11 14z" fill="#0A1628"/>
+</svg>
