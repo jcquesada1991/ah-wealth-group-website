@@ -1,0 +1,23 @@
+/* ============================================================
+   A&H Wealth Group — TOKENS (fuente de verdad visual)
+   Basado en los highlights de Instagram: verde bosque + dorado + crema.
+   Toda página DEBE importar este archivo. No redefinir estos valores.
+   ============================================================ */
+:root{
+  --forest:    #0A1628;  /* verde bosque: color base, fondos de marca, headers/footers */
+  --forest-700:#07101F;  /* verde más profundo para profundidad */
+  --gold:      #D4AF37;  /* dorado: acentos, bordes de círculo, títulos resaltados */
+  --gold-deep: #B8941F;  /* hover del dorado */
+  --gold-text: #7C5F0F;  /* dorado accesible SOLO para texto pequeño sobre fondos claros (AA: 5.09:1 sobre --cream) */
+  --cream:     #F4ECD8;  /* crema: superficies cálidas, texto sobre verde */
+  --wa-green:  #25D366;  /* EXCLUSIVO botones WhatsApp */
+  --wa-green-d:#1DA851;
+  --ink:       #14201A;  /* texto sobre fondo claro */
+  --muted:     #5B6B62;  /* texto secundario */
+  --bg:        #FFFFFF;  /* fondo de cuerpo */
+  --bg-soft:   #F8F6EF;  /* secciones alternas */
+  --font-head: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --radius:18px; --radius-sm:12px;
+  --shadow:0 10px 30px rgba(10,22,40,.10);
+}

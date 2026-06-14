@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Bookkeeping, libro contable abierto">
+  <circle cx="60" cy="60" r="56" fill="#0A1628" stroke="#D4AF37" stroke-width="3"/>
+  <!-- lomo / sombra central -->
+  <path d="M60 42v42" stroke="#D4AF37" stroke-width="2" opacity=".5"/>
+  <!-- página izquierda -->
+  <path d="M60 42c-7-5-15-6-22-5v40c7-1 15 0 22 5z" fill="#F4ECD8"/>
+  <!-- página derecha -->
+  <path d="M60 42c7-5 15-6 22-5v40c-7-1-15 0-22 5z" fill="#F4ECD8"/>
+  <!-- renglones izquierda -->
+  <g stroke="#0A1628" stroke-width="2" stroke-linecap="round" opacity=".4">
+    <path d="M44 50h11"/><path d="M44 57h11"/><path d="M44 64h11"/><path d="M44 71h8"/>
+  </g>
+  <!-- renglones derecha -->
+  <g stroke="#0A1628" stroke-width="2" stroke-linecap="round" opacity=".4">
+    <path d="M65 50h11"/><path d="M65 57h11"/><path d="M65 64h11"/><path d="M65 71h8"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Crédito, tarjeta de crédito">
+  <circle cx="60" cy="60" r="56" fill="#0A1628" stroke="#D4AF37" stroke-width="3"/>
+  <!-- tarjeta dorada -->
+  <rect x="34" y="43" width="52" height="34" rx="5" fill="#D4AF37"/>
+  <!-- chip -->
+  <rect x="40" y="49" width="11" height="8.5" rx="1.8" fill="#0A1628"/>
+  <line x1="45.5" y1="49" x2="45.5" y2="57.5" stroke="#D4AF37" stroke-width="1"/>
+  <line x1="40" y1="53.25" x2="51" y2="53.25" stroke="#D4AF37" stroke-width="1"/>
+  <!-- banda separadora -->
+  <rect x="34" y="62" width="52" height="2.6" fill="#0A1628"/>
+</svg>

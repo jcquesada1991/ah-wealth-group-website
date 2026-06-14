@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Ubicación">
+  <circle cx="60" cy="60" r="56" fill="#0A1628" stroke="#D4AF37" stroke-width="3"/>
+  <!-- pin -->
+  <path d="M60 34c-9.4 0-17 7.6-17 17 0 12 17 33 17 33s17-21 17-33c0-9.4-7.6-17-17-17z" fill="#D4AF37"/>
+  <!-- hueco interior -->
+  <circle cx="60" cy="51" r="6.5" fill="#0A1628"/>
+</svg>
