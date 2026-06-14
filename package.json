@@ -1,0 +1,9 @@
+{
+  "name": "ah-wealth-group-website",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A&H Wealth Group — sitio estático. El build solo copia los archivos a dist/ (sin framework).",
+  "scripts": {
+    "build": "node build.js"
+  }
+}
