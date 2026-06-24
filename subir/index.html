@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A&H Wealth Group — Sube tus documentos</title>
+  <meta name="robots" content="noindex">
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #f4f6f9; }
+    #portal { border: 0; width: 100%; height: 100vh; display: block; }
+  </style>
+</head>
+<body>
+  <!--
+    Página puente: incrusta el portal (Apps Script) en un iframe para:
+      1) usar tu dominio (ahwealthgroup.com) en vez del link largo de script.google.com
+      2) ocultar el banner "created by a Google Apps Script user"
+    Pasa el ?e=<email> del URL hacia el iframe para pre-cargar el correo del cliente.
+    Subir a Hostinger (ej. carpeta /subir/ -> queda https://ahwealthgroup.com/subir).
+  -->
+  <iframe id="portal" title="A&H Wealth Group — Portal de documentos"
+          allow="clipboard-read; clipboard-write"></iframe>
+  <script>
+    (function () {
+      var EXEC = 'https://script.google.com/macros/s/AKfycbxM6VO_9HdIVvQviMllSGaXPEIrHudpGyWdxf86JlhDuVd_54TcKVN-XDjhyJ9NczIz7A/exec';
+      var e = new URLSearchParams(window.location.search).get('e') || '';
+      document.getElementById('portal').src = EXEC + (e ? ('?e=' + encodeURIComponent(e)) : '');
+    })();
+  </script>
+</body>
+</html>
