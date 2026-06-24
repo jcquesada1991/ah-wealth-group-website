@@ -6,25 +6,35 @@
   <title>A&H Wealth Group — Sube tus documentos</title>
   <meta name="robots" content="noindex">
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; background: #f4f6f9; }
-    #portal { border: 0; width: 100%; height: 100vh; display: block; }
+    body { margin:0; font-family:'Segoe UI',Arial,sans-serif; background:#f4f6f9;
+           color:#0A1628; display:flex; min-height:100vh; align-items:center;
+           justify-content:center; text-align:center; padding:24px; }
+    .box { max-width:420px; }
+    .spin { width:42px; height:42px; margin:0 auto 18px; border:4px solid #d8dee9;
+            border-top-color:#D4AF37; border-radius:50%; animation:r 0.9s linear infinite; }
+    @keyframes r { to { transform:rotate(360deg); } }
+    a.btn { display:inline-block; margin-top:14px; padding:12px 20px; background:#0A1628;
+            color:#F4ECD8; text-decoration:none; border-radius:8px; font-weight:600; }
   </style>
 </head>
 <body>
   <!--
-    Página puente: incrusta el portal (Apps Script) en un iframe para:
-      1) usar tu dominio (ahwealthgroup.com) en vez del link largo de script.google.com
-      2) ocultar el banner "created by a Google Apps Script user"
-    Pasa el ?e=<email> del URL hacia el iframe para pre-cargar el correo del cliente.
-    Subir a Hostinger (ej. carpeta /subir/ -> queda https://ahwealthgroup.com/subir).
+    Pagina puente por REDIRECCION (no iframe): Safari iOS bloquea cookies de terceros
+    => el portal de Apps Script en iframe sale en blanco en movil. Redirigir top-level
+    lo carga en primera-parte y funciona en todos lados. Preserva el ?e=<email>.
   -->
-  <iframe id="portal" title="A&H Wealth Group — Portal de documentos"
-          allow="clipboard-read; clipboard-write"></iframe>
+  <div class="box">
+    <div class="spin"></div>
+    <p>Llevandote al portal seguro de <strong>A&amp;H Wealth Group</strong>…</p>
+    <a id="go" class="btn" href="#">Subir mis documentos</a>
+  </div>
   <script>
     (function () {
       var EXEC = 'https://script.google.com/macros/s/AKfycbxM6VO_9HdIVvQviMllSGaXPEIrHudpGyWdxf86JlhDuVd_54TcKVN-XDjhyJ9NczIz7A/exec';
       var e = new URLSearchParams(window.location.search).get('e') || '';
-      document.getElementById('portal').src = EXEC + (e ? ('?e=' + encodeURIComponent(e)) : '');
+      var dest = EXEC + (e ? ('?e=' + encodeURIComponent(e)) : '');
+      document.getElementById('go').href = dest;
+      window.location.replace(dest);
     })();
   </script>
 </body>
