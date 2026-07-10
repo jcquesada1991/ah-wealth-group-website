@@ -21,7 +21,8 @@
   <!--
     Pagina puente por REDIRECCION (no iframe): Safari iOS bloquea cookies de terceros
     => el portal de Apps Script en iframe sale en blanco en movil. Redirigir top-level
-    lo carga en primera-parte y funciona en todos lados. Preserva el ?e=<email>.
+    lo carga en primera-parte y funciona en todos lados. Preserva TODOS los query params
+    (?e=<email>&t=<token firmado>) — el portal exige el token t o muestra "link invalido".
   -->
   <div class="box">
     <div class="spin"></div>
@@ -31,8 +32,9 @@
   <script>
     (function () {
       var EXEC = 'https://script.google.com/macros/s/AKfycbxM6VO_9HdIVvQviMllSGaXPEIrHudpGyWdxf86JlhDuVd_54TcKVN-XDjhyJ9NczIz7A/exec';
-      var e = new URLSearchParams(window.location.search).get('e') || '';
-      var dest = EXEC + (e ? ('?e=' + encodeURIComponent(e)) : '');
+      // Propaga la query completa (?e=<email>&t=<token>) al /exec. El portal exige el token t;
+      // si solo pasaramos ?e= (como antes), el link firmado saldria "invalido".
+      var dest = EXEC + window.location.search;
       document.getElementById('go').href = dest;
       window.location.replace(dest);
     })();
