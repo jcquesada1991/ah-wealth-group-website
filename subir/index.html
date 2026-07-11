@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A&H Wealth Group — Sube tus documentos</title>
   <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
   <style>
     body { margin:0; font-family:'Segoe UI',Arial,sans-serif; background:#f4f6f9;
            color:#0A1628; display:flex; min-height:100vh; align-items:center;
@@ -22,7 +23,7 @@
     Pagina puente por REDIRECCION (no iframe): Safari iOS bloquea cookies de terceros
     => el portal de Apps Script en iframe sale en blanco en movil. Redirigir top-level
     lo carga en primera-parte y funciona en todos lados. Preserva TODOS los query params
-    (?e=<email>&t=<token firmado>) — el portal exige el token t o muestra "link invalido".
+    (?k=<codigo>) — el portal resuelve el codigo o muestra "link invalido".
   -->
   <div class="box">
     <div class="spin"></div>
@@ -32,8 +33,8 @@
   <script>
     (function () {
       var EXEC = 'https://script.google.com/macros/s/AKfycbxM6VO_9HdIVvQviMllSGaXPEIrHudpGyWdxf86JlhDuVd_54TcKVN-XDjhyJ9NczIz7A/exec';
-      // Propaga la query completa (?e=<email>&t=<token>) al /exec. El portal exige el token t;
-      // si solo pasaramos ?e= (como antes), el link firmado saldria "invalido".
+      // Propaga la query completa (?k=<codigo>) al /exec. El portal resuelve el codigo;
+      // si no se pasara, el link saldria "invalido".
       var dest = EXEC + window.location.search;
       document.getElementById('go').href = dest;
       window.location.replace(dest);
