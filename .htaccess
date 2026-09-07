@@ -40,13 +40,19 @@
 </IfModule>
 
 # ─────────────────────────────────────────────────────────────────────────────
-# PROXY INVERSO: NO SE PUEDE EN ESTE HOSTING. Probado el 2026-09-07.
-# `mod_proxy` SÍ está cargado (el bloque llegó a ejecutarse, no se ignoró) pero
-# Hostinger bloquea las conexiones salientes del proxy: la ruta de prueba
-# devolvió 503 Service Unavailable.
-# ⇒ Las apps externas (PL Exprés en Render) NO pueden servirse bajo
-#   ahwealthgroup.com conservando la URL. Y como el DNS lo controla un tercero,
-#   tampoco hay CNAME. Lo que sí funciona son páginas puente que redirigen:
-#   /clientes/ (expediente del cliente) y /panel/ (panel del preparador).
-# NO volver a intentarlo sin una razón nueva.
+# PL EXPRÉS DENTRO DE ESTE DOMINIO (2026-09-07)
+# La app corre en Render, pero se sirve bajo ahwealthgroup.com para que el
+# cliente nunca vea otro dominio al subir sus estados de cuenta.
+#   · CNAME a Render → imposible: el DNS lo controla un tercero.
+#   · mod_proxy [P]  → imposible: está cargado, pero Hostinger bloquea sus
+#                      conexiones salientes (503 medido).
+#   · PHP + cURL     → SÍ (PHP 8.3.33, 126 ms al servicio). Es lo que se usa.
+# Estas 4 rutas están LIBRES en el sitio (verificado): no pisan ninguna página.
+# proxy.php tiene el destino FIJO escrito dentro; nunca sale de la URL.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(c|prep)(/.*)?$   proxy.php  [QSA,L]
+    RewriteRule ^healthz$          proxy.php  [QSA,L]
+    RewriteRule ^styles\.css$      proxy.php  [QSA,L]
+</IfModule>
 # ─────────────────────────────────────────────────────────────────────────────
