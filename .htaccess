@@ -38,3 +38,20 @@
     ExpiresByType text/html "access plus 0 seconds"
     ExpiresDefault "access plus 2 days"
 </IfModule>
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PRUEBA (2026-09-07): ¿este Apache permite hacer de proxy inverso?
+# Si SÍ, el panel de PL Exprés y el expediente del cliente pueden vivir dentro
+# de ahwealthgroup.com sin tocar el DNS (que no controlamos).
+# Si NO, este bloque se ignora entero y el sitio sigue exactamente igual: por eso
+# va envuelto en <IfModule>. Un .htaccess con [P] sin mod_proxy da 500 en TODA la
+# web, y esta es la web de producción del negocio.
+# Se prueba en una ruta de usar y tirar; se retira en cuanto se sepa el resultado.
+<IfModule mod_proxy.c>
+<IfModule mod_proxy_http.c>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^pruebaproxy$ https://plx-ea5t.onrender.com/healthz [P,L]
+</IfModule>
+</IfModule>
+</IfModule>
