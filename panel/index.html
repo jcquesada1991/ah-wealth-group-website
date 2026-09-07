@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A&H Wealth Group — Panel</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <style>
+    :root { --navy:#0A1628; --gold:#D4AF37; --cream:#F4ECD8; }
+    body { margin:0; font-family:'Segoe UI',Arial,sans-serif; background:#f4f6f9;
+           color:var(--navy); display:flex; min-height:100vh; align-items:center;
+           justify-content:center; text-align:center; padding:24px; }
+    .box { max-width:420px; }
+    .marca { font-weight:800; letter-spacing:.5px; margin-bottom:22px; }
+    .marca span { display:inline-block; width:34px; height:34px; line-height:34px;
+                  border-radius:50%; background:var(--gold); color:var(--navy);
+                  font-size:13px; margin-right:8px; vertical-align:middle; }
+    .spin { width:38px; height:38px; margin:0 auto 16px; border:4px solid #d8dee9;
+            border-top-color:var(--gold); border-radius:50%; animation:r .9s linear infinite; }
+    @keyframes r { to { transform:rotate(360deg); } }
+    a.btn { display:inline-block; margin-top:12px; padding:12px 22px; background:var(--navy);
+            color:var(--cream); text-decoration:none; border-radius:8px; font-weight:600; }
+    .nota { margin-top:18px; font-size:13px; color:#5a6675; line-height:1.6; }
+  </style>
+</head>
+<body>
+  <!--
+    Acceso al panel de PL Expres (2026-09-07). Es un REDIRECT, no un proxy.
+    Se probo si este Apache podia hacer de proxy inverso para que la URL se
+    quedara en ahwealthgroup.com: mod_proxy esta cargado pero Hostinger bloquea
+    las conexiones salientes (503 medido). Y el DNS no es nuestro, asi que
+    tampoco hay CNAME posible. Esto es lo que si funciona.
+    Solo entra quien sabe la contrasena: el panel la pide del otro lado.
+  -->
+  <div class="box">
+    <div class="marca"><span>AH</span> A&amp;H Wealth Group</div>
+    <div class="spin"></div>
+    <p>Abriendo el panel del preparador…</p>
+    <a id="go" class="btn" href="https://plx-ea5t.onrender.com/prep">Entrar al panel</a>
+    <div class="nota">
+      La primera vez del día puede tardar <b>hasta un minuto</b> en despertar.<br>
+      Si eres cliente, esta no es tu página: usa el enlace personal que te enviamos.
+    </div>
+  </div>
+  <script>
+    setTimeout(function () {
+      window.location.replace('https://plx-ea5t.onrender.com/prep');
+    }, 600);
+  </script>
+</body>
+</html>
