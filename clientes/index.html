@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A&H Wealth Group — Organiza tus estados de cuenta</title>
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <style>
+    :root { --navy:#0A1628; --gold:#D4AF37; --cream:#F4ECD8; }
+    body { margin:0; font-family:'Segoe UI',Arial,sans-serif; background:#f4f6f9;
+           color:var(--navy); display:flex; min-height:100vh; align-items:center;
+           justify-content:center; text-align:center; padding:24px; }
+    .box { max-width:460px; }
+    .marca { font-weight:800; letter-spacing:.5px; margin-bottom:22px; }
+    .marca span { display:inline-block; width:34px; height:34px; line-height:34px;
+                  border-radius:50%; background:var(--gold); color:var(--navy);
+                  font-size:13px; margin-right:8px; vertical-align:middle; }
+    .spin { width:42px; height:42px; margin:0 auto 18px; border:4px solid #d8dee9;
+            border-top-color:var(--gold); border-radius:50%; animation:r .9s linear infinite; }
+    @keyframes r { to { transform:rotate(360deg); } }
+    a.btn { display:inline-block; margin-top:14px; padding:12px 22px; background:var(--navy);
+            color:var(--cream); text-decoration:none; border-radius:8px; font-weight:600; }
+    .nota { margin-top:20px; font-size:13.5px; color:#5a6675; line-height:1.6; }
+    .aviso { display:none; background:#fff; border:1px solid #e2e6ec; border-radius:10px;
+             padding:20px 22px; text-align:left; line-height:1.6; }
+    .aviso b { color:var(--navy); }
+  </style>
+</head>
+<body>
+  <!--
+    Pagina puente para PL Expres (2026-09-07).
+    POR QUE EXISTE: la herramienta corre en Render y su URL es plx-ea5t.onrender.com.
+    Mandarle a un cliente un enlace con ese dominio, pidiendole que suba estados de
+    cuenta bancarios, se lee como un phishing — y hace bien en desconfiar. El DNS de
+    ahwealthgroup.com no lo controlamos, asi que no se puede poner un CNAME; pero los
+    ARCHIVOS del sitio si son nuestros. Mismo patron que /subir/ (que ya funciona en
+    produccion): el cliente recibe un enlace de ahwealthgroup.com, ve la marca, y de
+    ahi salta a la herramienta.
+    REDIRECT, no iframe: Safari iOS bloquea cookies de terceros y el portal saldria
+    en blanco en movil.
+  -->
+  <div class="box">
+    <div class="marca"><span>AH</span> A&amp;H Wealth Group</div>
+
+    <div id="yendo">
+      <div class="spin"></div>
+      <p>Llevándote a tu expediente seguro…</p>
+      <a id="go" class="btn" href="#">Continuar</a>
+      <div class="nota">Si no avanza en unos segundos, toca <b>Continuar</b>.</div>
+    </div>
+
+    <div id="sinToken" class="aviso">
+      <p><b>Te falta tu enlace personal.</b></p>
+      <p>Esta página solo funciona con el enlace que te enviamos por WhatsApp o correo,
+         porque ese enlace es lo que identifica tu expediente.</p>
+      <p class="nota" style="margin-top:14px">¿No lo encuentras o no esperabas ningún enlace nuestro?
+         <b>No subas ningún documento</b> y escríbenos antes por el canal de siempre.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var APP = 'https://plx-ea5t.onrender.com';
+      var t = new URLSearchParams(window.location.search).get('t') || '';
+      // El token es base64url de 24 caracteres. Se valida la FORMA antes de redirigir:
+      // asi un enlace manipulado no nos convierte en un redirector abierto hacia
+      // cualquier sitio (open redirect).
+      if (!/^[A-Za-z0-9_-]{16,64}$/.test(t)) {
+        document.getElementById('yendo').style.display = 'none';
+        document.getElementById('sinToken').style.display = 'block';
+        return;
+      }
+      var dest = APP + '/c/' + encodeURIComponent(t);
+      document.getElementById('go').href = dest;
+      window.location.replace(dest);
+    })();
+  </script>
+</body>
+</html>
