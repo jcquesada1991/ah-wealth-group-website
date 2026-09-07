@@ -51,6 +51,14 @@
 # proxy.php tiene el destino FIJO escrito dentro; nunca sale de la URL.
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # Enlaces viejos: /clientes/?t=TOKEN  ->  /c/TOKEN  (301 del servidor).
+    # La pagina puente que hacia este salto con JavaScript ya no existe; esto
+    # es solo para que los enlaces repartidos antes del 7-sep-2026 no mueran.
+    # Se puede quitar cuando no quede ninguno en circulacion.
+    RewriteCond %{QUERY_STRING} ^t=([A-Za-z0-9_-]{16,64})$
+    RewriteRule ^clientes/?$       /c/%1?     [R=301,L]
+
     RewriteRule ^(c|prep)(/.*)?$   proxy.php  [QSA,L]
     RewriteRule ^healthz$          proxy.php  [QSA,L]
     RewriteRule ^styles\.css$      proxy.php  [QSA,L]
