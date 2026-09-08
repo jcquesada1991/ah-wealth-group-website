@@ -6,7 +6,7 @@ const path = require('path');
 const DIST = 'dist';
 // Lo que NO debe ir a producción:
 const EXCLUDE = new Set([
-  'dist', '_legacy', 'node_modules', '.git', '.githooks', '.gitignore',
+  'dist', '_legacy', 'node_modules', '.git', '.github', '.githooks', '.gitignore',
   'package.json', 'package-lock.json', 'build.js', 'README.md'
 ]);
 

@@ -1,0 +1,65 @@
+# Mantiene despierto PL Exprés (Render, plan free) para que el primer cliente
+# del día no espere 50-60 s a que el servicio arranque en frío.
+#
+# Se pincha `https://ahwealthgroup.com/healthz`, NO la URL de Render: así el
+# mismo latido comprueba la cadena entera —DNS, Hostinger, proxy.php y Render—.
+# Si algún día el proxy se rompe, esto se pone rojo y se sabe.
+#
+# ⚠️ POR QUÉ NO ES 24/7. El plan free de Render da 750 horas de instancia al mes
+# y un servicio despierto todo el día se come ~730: quedaría sin margen para
+# nada más. Se mantiene despierto de 7:00 a 23:00 hora de Miami (~450 h/mes) y
+# de madrugada se deja dormir. Un cliente que abra su enlace a las 3 AM espera
+# los 50 s una vez; a cambio queda holgura en la cuota.
+#
+# ⚠️ GitHub apaga los workflows programados en repos sin actividad 60 días.
+# Este repo recibe commits del sitio a menudo, pero si alguna vez se para el
+# desarrollo hay que volver a habilitarlo a mano.
+
+name: keepalive-plx
+
+on:
+  schedule:
+    # cada 10 min entre las 11:00 y las 02:59 UTC = 7:00–22:59 en Miami
+    - cron: '*/10 11-23,0-2 * * *'
+  workflow_dispatch:        # para dispararlo a mano y comprobar que funciona
+
+concurrency:
+  group: keepalive-plx
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Latido
+        run: |
+          set -u
+          URL="https://ahwealthgroup.com/healthz"
+
+          latir () {
+            # 90 s de margen: si estaba dormido, esta llamada es la que lo
+            # despierta y tarda. Que tarde es exito, no fallo.
+            local code inicio fin
+            inicio=$(date +%s)
+            code=$(curl -sS -o /tmp/salida -w '%{http_code}' --max-time 90 "$URL" || echo 000)
+            fin=$(date +%s)
+            echo "$(date -u +%H:%M:%S)  HTTP $code  en $((fin-inicio))s  ->  $(cat /tmp/salida | head -c 120)"
+            [ "$code" = "200" ]
+          }
+
+          # Dos latidos por corrida, separados 5 min: GitHub retrasa los cron
+          # con frecuencia, y así la ventana real entre latidos no se estira
+          # hasta los 15 min que Render tarda en dormirse.
+          ok=0
+          latir && ok=1 || echo "primer latido fallido, se reintenta tras la pausa"
+          sleep 300
+          latir && ok=1 || true
+
+          if [ "$ok" != "1" ]; then
+            echo "::error::Ningún latido devolvió 200. La cadena dominio -> proxy -> Render está caída."
+            exit 1
+          fi
