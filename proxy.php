@@ -58,11 +58,12 @@ $fuera[] = 'X-Forwarded-For: ' . ($_SERVER['REMOTE_ADDR'] ?? '');
         solo acepta `pdfs` ⇒ «No se pudo subir: Unexpected field».
      2. Con varios PDF bajo el mismo nombre (`pdfs`, sin corchetes) PHP se queda
         SOLO con el último ⇒ de cinco statements habría llegado uno.
-   La salida limpia es que PHP NO toque el cuerpo: `.user.ini` apaga
-   `enable_post_data_reading` y aquí se reenvía el multipart crudo, con su
-   boundary original, tal como lo mandó el navegador. Si el hosting ignorara ese
-   .user.ini, queda el plan B: reconstruir el multipart A MANO repitiendo el
-   nombre de campo tal cual (arregla el 1; el 2 no tiene arreglo dentro de PHP).
+   Medido el mismo 9-sep: Hostinger IGNORA .user.ini (12 min tras el deploy la
+   cabecera seguía en `rebuilt`), así que el camino real es reconstruir el
+   multipart A MANO repitiendo el nombre de campo tal cual (arregla el 1). El 2
+   se arregló en la app: el formulario manda `pdfs[]`, que PHP conserva entero,
+   y la app acepta `pdfs` y `pdfs[]`. El camino `raw` se queda por si algún día
+   el hosting deja apagar enable_post_data_reading.
    La cabecera X-Proxy-Body dice qué camino se usó, para poder medirlo.        */
 if ($metodo !== 'GET' && $metodo !== 'HEAD') {
     $tipo = $_SERVER['CONTENT_TYPE'] ?? '';

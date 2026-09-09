@@ -64,9 +64,3 @@
     RewriteRule ^styles\.css$      proxy.php  [QSA,L]
 </IfModule>
 # ─────────────────────────────────────────────────────────────────────────────
-
-# 9-sep-2026: .user.ini (ajustes de PHP para proxy.php) no debe servirse por HTTP.
-# Apache ya protege .htaccess; este archivo no, y respondia 200.
-<Files ".user.ini">
-    Require all denied
-</Files>
