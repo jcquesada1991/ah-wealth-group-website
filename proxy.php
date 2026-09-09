@@ -52,15 +52,45 @@ $fuera[] = 'X-Forwarded-Host: ' . ($_SERVER['HTTP_HOST'] ?? 'ahwealthgroup.com')
 $fuera[] = 'X-Forwarded-For: ' . ($_SERVER['REMOTE_ADDR'] ?? '');
 
 /* ── cuerpo ───────────────────────────────────────────────────────────────
-   Si hay ficheros, PHP ya consumió el multipart y hay que reconstruirlo con
-   CURLFile — pasar php://input aquí devolvería vacío. Si no, se reenvía el
-   cuerpo crudo tal cual (formularios normales y JSON).                     */
+   9-sep-2026. Medido con el primer intento real de un cliente: NINGUNA subida
+   por el dominio llegaba. Dos defectos, los dos de PHP y no de la app:
+     1. cURL mandaba cada archivo como campo `pdfs[0]`, `pdfs[1]`… y la app
+        solo acepta `pdfs` ⇒ «No se pudo subir: Unexpected field».
+     2. Con varios PDF bajo el mismo nombre (`pdfs`, sin corchetes) PHP se queda
+        SOLO con el último ⇒ de cinco statements habría llegado uno.
+   La salida limpia es que PHP NO toque el cuerpo: `.user.ini` apaga
+   `enable_post_data_reading` y aquí se reenvía el multipart crudo, con su
+   boundary original, tal como lo mandó el navegador. Si el hosting ignorara ese
+   .user.ini, queda el plan B: reconstruir el multipart A MANO repitiendo el
+   nombre de campo tal cual (arregla el 1; el 2 no tiene arreglo dentro de PHP).
+   La cabecera X-Proxy-Body dice qué camino se usó, para poder medirlo.        */
 if ($metodo !== 'GET' && $metodo !== 'HEAD') {
-    if (!empty($_FILES)) {
-        $campos = [];
+    $tipo = $_SERVER['CONTENT_TYPE'] ?? '';
+    $esMultipart = stripos($tipo, 'multipart/form-data') === 0;
+    if ($esMultipart && empty($_FILES) && empty($_POST)) {
+        // PHP no consumió el cuerpo (enable_post_data_reading=Off): va crudo
+        curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents('php://input'));
+        header('X-Proxy-Body: raw');
+    } elseif (!empty($_FILES) || ($esMultipart && !empty($_POST))) {
+        // Plan B: PHP ya desmontó el multipart; se vuelve a montar con los
+        // nombres de campo ORIGINALES (`pdfs` repetido, nunca `pdfs[0]`).
+        $boundary = '----PLX' . bin2hex(random_bytes(12));
+        $rn = chr(13) . chr(10);
+        $body = '';
+        $parte = function ($nombre, $valor, $archivo = null, $mime = null) use (&$body, $boundary, $rn) {
+            $nombre = str_replace(['"', chr(13), chr(10)], '', $nombre);
+            $body .= '--' . $boundary . $rn;
+            if ($archivo === null) {
+                $body .= 'Content-Disposition: form-data; name="' . $nombre . '"' . $rn . $rn . $valor . $rn;
+            } else {
+                $archivo = str_replace(['"', chr(13), chr(10)], '', $archivo);
+                $body .= 'Content-Disposition: form-data; name="' . $nombre . '"; filename="' . $archivo . '"' . $rn
+                       . 'Content-Type: ' . ($mime ?: 'application/pdf') . $rn . $rn . $valor . $rn;
+            }
+        };
         foreach ($_POST as $k => $v) {
-            if (is_array($v)) { foreach ($v as $i => $vv) $campos["{$k}[{$i}]"] = $vv; }
-            else $campos[$k] = $v;
+            if (is_array($v)) { foreach ($v as $vv) $parte($k . '[]', (string) $vv); }
+            else $parte($k, (string) $v);
         }
         foreach ($_FILES as $campo => $f) {
             $nombres = is_array($f['name']) ? $f['name'] : [$f['name']];
@@ -68,14 +98,16 @@ if ($metodo !== 'GET' && $metodo !== 'HEAD') {
             $tipos   = is_array($f['type']) ? $f['type'] : [$f['type']];
             foreach ($nombres as $i => $nombre) {
                 if (!$tmps[$i] || !is_uploaded_file($tmps[$i])) continue;
-                // el nombre del campo se repite: la app espera `pdfs` varias veces
-                $campos[$campo . '[' . $i . ']'] = new CURLFile($tmps[$i], $tipos[$i] ?: 'application/pdf', $nombre);
+                $parte($campo, file_get_contents($tmps[$i]), $nombre, $tipos[$i] ?? null);
             }
         }
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $campos);
-        // cURL pone su propio Content-Type con el boundary nuevo
+        $body .= '--' . $boundary . '--' . $rn;
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         $fuera = array_values(array_filter($fuera, fn($h) => stripos($h, 'Content-Type:') !== 0));
+        $fuera[] = 'Content-Type: multipart/form-data; boundary=' . $boundary;
+        header('X-Proxy-Body: rebuilt');
     } else {
+        // formularios normales y JSON: el cuerpo crudo, tal cual
         curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents('php://input'));
     }
 }
