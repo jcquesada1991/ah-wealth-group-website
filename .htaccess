@@ -60,6 +60,11 @@
     RewriteRule ^clientes/?$       /c/%1?     [R=301,L]
 
     RewriteRule ^(c|prep)(/.*)?$   proxy.php  [QSA,L]
+    # 9-sep-2026: alta publica. Un enlace generico que CREA el expediente de quien
+    # lo abre, para no tener que crear un caso por persona a mano. Sin esta linea la
+    # pagina existe en Render pero da 404 bajo el dominio, que es lo unico que se
+    # reparte.
+    RewriteRule ^alta/?$          proxy.php  [QSA,L]
     RewriteRule ^healthz$          proxy.php  [QSA,L]
     RewriteRule ^styles\.css$      proxy.php  [QSA,L]
 </IfModule>
