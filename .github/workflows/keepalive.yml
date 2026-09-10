@@ -6,6 +6,32 @@
 # se rompe, esto se pone rojo y se sabe.
 #
 # ─────────────────────────────────────────────────────────────────────────────
+# ⚠️⚠️ EL LATIDO TIENE QUE LLEVAR CACHE-BUSTER, O NO SIRVE PARA NADA (10-sep-2026)
+# Medido tras 14 h 38 min sin un solo latido:
+#     ahwealthgroup.com/healthz  ->  200 en 0,85 s
+#         Server: hcdn · Cache-Control: public, max-age=172800 · Age: 134499
+#     plx-ea5t.onrender.com/healthz (directo)  ->  200 en 12,39 s
+# `Age: 134499` son 37,4 HORAS: el CDN de Hostinger (`hcdn`) estaba sirviendo una
+# copia guardada de hasta 48 h, así que el latido NUNCA llegaba a Render. Render sí
+# estaba dormido (12,39 s de arranque en frío) mientras el semáforo salía verde.
+# Descartado leyendo el código, no suponiendo: .htaccess sí enruta ^healthz$ a
+# proxy.php, y proxy.php no cachea (manda todo a UPSTREAM con cURL) ⇒ la caché está
+# DELANTE del proxy, en el CDN del hosting.
+# ⇒ cada latido añade `?t=<epoch>` y va con cabeceras no-cache. Y si aun así vuelve
+#    una respuesta con `Age:`, el job avisa en vez de mentir en verde.
+#
+# ¿CADA CUÁNTO SE DUERME? Medido hoy ejecutando este mismo bucle tres veces:
+#     15:17 sonda directa  -> 12,39 s (dormido tras 14 h 38 sin latido)
+#     15:52 primer latido  -> 22 s    (dormido otra vez, 35 min después)
+#     16:09 primer latido  -> 22 s    (dormido otra vez, 17 min después)
+#     16:09 latidos 2/3/4  -> 1 s     (caliente: el bucle SÍ lo mantiene vivo)
+# ⇒ el umbral está por debajo de los 17 minutos, coherente con los ~15 documentados.
+#   `CADA=600` (10 min) lo cubre. Queda una anomalía sin explicar: el 9-sep, tras
+#   3 h 25 sin latido, la URL de Render contestó en 0,25 s; probablemente respondió
+#   la capa de Cloudflare que Render tiene delante, no la instancia. No se toma como
+#   base de nada: tres mediciones dicen que se duerme, una dice que no.
+#
+# ─────────────────────────────────────────────────────────────────────────────
 # POR QUÉ ESTE ARCHIVO SE REESCRIBIÓ (9-sep-2026)
 # La versión anterior declaraba `*/10 11-23,0-2` —un latido cada 10 minutos— y
 # salía verde todos los días. No servía. Medido con `gh run list` sobre 11 corridas
@@ -64,22 +90,37 @@ jobs:
           MINUTOS_IN: ${{ inputs.minutos || '350' }}
         run: |
           set -u
-          URL="https://ahwealthgroup.com/healthz"
+          # Sin `?t=` el CDN de Hostinger contesta con una copia de hasta 48 h y el
+          # latido no llega a Render. Ver la nota del encabezado: esto no es opcional.
+          URL_BASE="https://ahwealthgroup.com/healthz"
           MINUTOS="${MINUTOS_IN:-350}"     # duración de la ventana
-          CADA=600                         # un latido cada 10 min; Render duerme a los 15
+          CADA=600                         # un latido cada 10 min
           case "$MINUTOS" in ''|*[!0-9]*) MINUTOS=350;; esac
 
           fin=$(( $(date +%s) + MINUTOS * 60 ))
-          n=0; fallos=0; seguidos=0; peor_caliente=0; frio=""
+          n=0; fallos=0; seguidos=0; peor_caliente=0; frio=""; cacheados=0
 
           while :; do
             n=$(( n + 1 ))
             inicio=$(date +%s)
+            # Cache-buster distinto en cada latido: así ninguna capa intermedia puede
+            # responder por Render.
+            url="${URL_BASE}?t=$(date +%s)-${n}"
             # `curl -w` ya imprime 000 cuando no llega, así que aquí NO se añade otro:
             # con `|| echo 000` el registro decía «HTTP 000000» y no se entendía nada.
-            code=$(curl -sS -o /tmp/salida -w '%{http_code}' --max-time 90 "$URL") || true
+            code=$(curl -sS -o /tmp/salida -D /tmp/cabeceras \
+                        -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+                        -w '%{http_code}' --max-time 90 "$url") || true
             [ -z "$code" ] && code=000
             tardo=$(( $(date +%s) - inicio ))
+
+            # Si vuelve un `Age:`, alguien contestó por Render y este job estaría
+            # midiendo una caché otra vez. Se cuenta y se avisa al final.
+            edad=$(grep -i '^age:' /tmp/cabeceras 2>/dev/null | tr -d '\r' | head -1 || true)
+            if [ -n "$edad" ]; then
+              cacheados=$(( cacheados + 1 ))
+              echo "::warning::Latido $n respondido desde caché ($edad). El cache-buster no está funcionando."
+            fi
 
             if [ "$code" = "200" ]; then
               seguidos=0
@@ -112,7 +153,15 @@ jobs:
           echo "latidos: $n   ·   fallidos: $fallos"
           echo "arranque en frío (1er latido): ${frio}s"
           echo "peor latido en caliente: ${peor_caliente}s"
+          echo "respondidos desde caché: $cacheados   (tiene que ser 0)"
           echo "----------------------------------------------------------"
+
+          # Un latido cacheado no despierta a Render: si esto pasa, el job estaría
+          # saliendo verde sin hacer su trabajo, que es exactamente el fallo del 10-sep.
+          if [ "$cacheados" -gt 0 ]; then
+            echo "::error::$cacheados de $n latidos los contestó una caché, no Render. El keepalive no está funcionando."
+            exit 1
+          fi
 
           # LA MEDIDA DE ÉXITO, escrita aquí para no tener que sondear a mano:
           # con el servicio despierto, un latido tiene que contestar en menos de 5 s.
