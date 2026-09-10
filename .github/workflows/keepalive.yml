@@ -1,27 +1,50 @@
-# Mantiene despierto PL Exprés (Render, plan free) para que el primer cliente
-# del día no espere 50-60 s a que el servicio arranque en frío.
+# Mantiene despierto PL Exprés (Render, plan free) para que un cliente que abre su
+# enlace no espere 50-60 s a que el servicio arranque en frío.
 #
-# Se pincha `https://ahwealthgroup.com/healthz`, NO la URL de Render: así el
-# mismo latido comprueba la cadena entera —DNS, Hostinger, proxy.php y Render—.
-# Si algún día el proxy se rompe, esto se pone rojo y se sabe.
+# Se pincha `https://ahwealthgroup.com/healthz`, NO la URL de Render: así el mismo
+# latido comprueba la cadena entera —DNS, Hostinger, proxy.php y Render—. Si el proxy
+# se rompe, esto se pone rojo y se sabe.
 #
-# ⚠️ POR QUÉ NO ES 24/7. El plan free de Render da 750 horas de instancia al mes
-# y un servicio despierto todo el día se come ~730: quedaría sin margen para
-# nada más. Se mantiene despierto de 7:00 a 23:00 hora de Miami (~450 h/mes) y
-# de madrugada se deja dormir. Un cliente que abra su enlace a las 3 AM espera
-# los 50 s una vez; a cambio queda holgura en la cuota.
+# ─────────────────────────────────────────────────────────────────────────────
+# POR QUÉ ESTE ARCHIVO SE REESCRIBIÓ (9-sep-2026)
+# La versión anterior declaraba `*/10 11-23,0-2` —un latido cada 10 minutos— y
+# salía verde todos los días. No servía. Medido con `gh run list` sobre 11 corridas
+# reales, los huecos ENTRE corridas fueron:
+#     1,8 h · 1,9 h · 2,1 h · 2,3 h · 2,7 h · 2,7 h · 3,3 h · 3,7 h · 4,5 h · 10,1 h
+# GitHub Actions no garantiza los cron y descarta sin avisar los de alta frecuencia:
+# cuanto más seguido se pide, menos se cumple. Y cada corrida cubría 5 minutos
+# (dos latidos separados por `sleep 300`), mientras Render se duerme a los 15.
+# ⇒ el servicio estaba dormido casi todo el tiempo y el semáforo verde no lo decía.
 #
-# ⚠️ GitHub apaga los workflows programados en repos sin actividad 60 días.
-# Este repo recibe commits del sitio a menudo, pero si alguna vez se para el
-# desarrollo hay que volver a habilitarlo a mano.
+# LA VUELTA: no depender de la frecuencia del cron, sino de la DURACIÓN del job.
+# Un job de Actions puede durar hasta 6 horas, y en un repo público los minutos son
+# gratis. Así que el cron dispara UNA vez al día —un cron poco frecuente sí se
+# respeta— y el propio job late cada 10 minutos durante 5 h 50 seguidas.
+#
+# ⚠️ POR QUÉ NO ES 24/7, y esto es lo que fija el tamaño de la ventana.
+# El plan free de Render da 750 horas de instancia al mes POR CUENTA. El middleware
+# del Intérprete consume ~540 h. Si PL Exprés se mantuviera despierto 16 h/día
+# (~480 h/mes) y ambos compartieran cuenta, sumarían ~1.020 contra 750 y caerían los
+# dos. Una ventana de ~6 h/día son ~175 h/mes: cabe en los dos escenarios, comparta
+# cuenta o no. **Si algún día se confirma que son cuentas distintas, la forma de
+# ensanchar es añadir un segundo `cron:` 6 horas después de este.**
+#
+# ⚠️ GitHub apaga los workflows programados en repos sin actividad 60 días. Este repo
+# recibe commits a menudo, pero si se para el desarrollo hay que rehabilitarlo a mano.
 
 name: keepalive-plx
 
 on:
   schedule:
-    # cada 10 min entre las 11:00 y las 02:59 UTC = 7:00–22:59 en Miami
-    - cron: '*/10 11-23,0-2 * * *'
+    # 19:00 UTC = 15:00 en Miami (EDT). El bucle cubre desde esa hora hasta ~20:50,
+    # la franja en la que un cliente abre su enlace de verdad.
+    - cron: '0 19 * * *'
   workflow_dispatch:        # para dispararlo a mano y comprobar que funciona
+    inputs:
+      minutos:
+        description: 'Cuánto latir (minutos). Pon 10 para comprobar que funciona sin gastar ventana de Render.'
+        required: false
+        default: '350'
 
 concurrency:
   group: keepalive-plx
@@ -33,33 +56,72 @@ permissions:
 jobs:
   ping:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 355
     steps:
-      - name: Latido
+      - name: Latir durante toda la ventana
+        env:
+          # Al dispararlo a mano se puede acortar; el cron diario usa los 350.
+          MINUTOS_IN: ${{ inputs.minutos || '350' }}
         run: |
           set -u
           URL="https://ahwealthgroup.com/healthz"
+          MINUTOS="${MINUTOS_IN:-350}"     # duración de la ventana
+          CADA=600                         # un latido cada 10 min; Render duerme a los 15
+          case "$MINUTOS" in ''|*[!0-9]*) MINUTOS=350;; esac
 
-          latir () {
-            # 90 s de margen: si estaba dormido, esta llamada es la que lo
-            # despierta y tarda. Que tarde es exito, no fallo.
-            local code inicio fin
+          fin=$(( $(date +%s) + MINUTOS * 60 ))
+          n=0; fallos=0; seguidos=0; peor_caliente=0; frio=""
+
+          while :; do
+            n=$(( n + 1 ))
             inicio=$(date +%s)
-            code=$(curl -sS -o /tmp/salida -w '%{http_code}' --max-time 90 "$URL" || echo 000)
-            fin=$(date +%s)
-            echo "$(date -u +%H:%M:%S)  HTTP $code  en $((fin-inicio))s  ->  $(cat /tmp/salida | head -c 120)"
-            [ "$code" = "200" ]
-          }
+            # `curl -w` ya imprime 000 cuando no llega, así que aquí NO se añade otro:
+            # con `|| echo 000` el registro decía «HTTP 000000» y no se entendía nada.
+            code=$(curl -sS -o /tmp/salida -w '%{http_code}' --max-time 90 "$URL") || true
+            [ -z "$code" ] && code=000
+            tardo=$(( $(date +%s) - inicio ))
 
-          # Dos latidos por corrida, separados 5 min: GitHub retrasa los cron
-          # con frecuencia, y así la ventana real entre latidos no se estira
-          # hasta los 15 min que Render tarda en dormirse.
-          ok=0
-          latir && ok=1 || echo "primer latido fallido, se reintenta tras la pausa"
-          sleep 300
-          latir && ok=1 || true
+            if [ "$code" = "200" ]; then
+              seguidos=0
+              # El PRIMER latido es el que despierta el servicio: que tarde es normal
+              # y es justo la prueba de que estaba dormido. Los siguientes deberían
+              # ser inmediatos; si uno en caliente tarda, eso sí es señal.
+              if [ "$n" = "1" ]; then
+                frio="$tardo"
+              elif [ "$tardo" -gt "$peor_caliente" ]; then
+                peor_caliente="$tardo"
+              fi
+            else
+              fallos=$(( fallos + 1 ))
+              seguidos=$(( seguidos + 1 ))
+            fi
 
-          if [ "$ok" != "1" ]; then
-            echo "::error::Ningún latido devolvió 200. La cadena dominio -> proxy -> Render está caída."
+            echo "$(date -u +%H:%M:%S)Z  latido $n  HTTP $code  ${tardo}s"
+
+            # Tres seguidos sin respuesta no es lentitud: es la cadena caída.
+            if [ "$seguidos" -ge 3 ]; then
+              echo "::error::3 latidos seguidos sin respuesta. La cadena dominio -> proxy.php -> Render está caída."
+              exit 1
+            fi
+
+            [ "$(date +%s)" -ge "$fin" ] && break
+            sleep "$CADA"
+          done
+
+          echo "----------------------------------------------------------"
+          echo "latidos: $n   ·   fallidos: $fallos"
+          echo "arranque en frío (1er latido): ${frio}s"
+          echo "peor latido en caliente: ${peor_caliente}s"
+          echo "----------------------------------------------------------"
+
+          # LA MEDIDA DE ÉXITO, escrita aquí para no tener que sondear a mano:
+          # con el servicio despierto, un latido tiene que contestar en menos de 5 s.
+          # Si el peor en caliente se dispara, el bucle no está manteniéndolo vivo.
+          if [ "$peor_caliente" -gt 5 ]; then
+            echo "::warning::Un latido en caliente tardó ${peor_caliente}s. Si se repite, la ventana no está cubriendo: revisa el intervalo."
+          fi
+
+          if [ "$fallos" -gt 0 ] && [ "$fallos" -ge "$(( n / 2 ))" ]; then
+            echo "::error::La mitad de los latidos o más fallaron ($fallos de $n)."
             exit 1
           fi
