@@ -65,6 +65,11 @@
     # pagina existe en Render pero da 404 bajo el dominio, que es lo unico que se
     # reparte.
     RewriteRule ^alta/?$          proxy.php  [QSA,L]
+    # 4-oct-2026: enlace corto de la cita para las descripciones de los videos.
+    # En IG/TikTok el enlace del caption no es clicable y la URL larga de GHL se
+    # ve fatal. 302 (no 301) para poder cambiar de calendario (p. ej. el de $75
+    # en temporada) sin que los navegadores se queden con el destino viejo.
+    RewriteRule ^cita/?$ https://api.leadconnectorhq.com/widget/bookings/ahtax-consult [R=302,L]
     RewriteRule ^healthz$          proxy.php  [QSA,L]
     RewriteRule ^styles\.css$      proxy.php  [QSA,L]
 </IfModule>
