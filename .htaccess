@@ -70,6 +70,10 @@
     # ve fatal. 302 (no 301) para poder cambiar de calendario (p. ej. el de $75
     # en temporada) sin que los navegadores se queden con el destino viejo.
     RewriteRule ^cita/?$ https://api.leadconnectorhq.com/widget/bookings/ahtax-consult [R=302,L]
+    # La cita de $75 («Tax Preparation») es SOLO para la temporada de impuestos:
+    # se cobran $75 al agendar y van incluidos en el precio final. Fuera de
+    # temporada se reparte /cita (gratis). Ojo: el slug corto da 404, va el completo.
+    RewriteRule ^taxescita/?$ https://api.leadconnectorhq.com/widget/bookings/taxpreppingservices-a8b577d2-5db8-49dc-a617-e79ca64e313d [R=302,L]
     RewriteRule ^healthz$          proxy.php  [QSA,L]
     RewriteRule ^styles\.css$      proxy.php  [QSA,L]
 </IfModule>
