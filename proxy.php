@@ -14,7 +14,7 @@
  *   no hay salto, no hay página puente, la barra de direcciones no cambia.
  *
  * CÓMO
- * .htaccess manda /c/…, /prep…, /healthz y /styles.css a este archivo. Esas
+ * .htaccess manda /c/…, /prep…, /alta, /subir…, /gestor/…, /tg/webhook, /healthz y /styles.css aquí. Esas
  * rutas están LIBRES en el sitio (verificado), así que la app conserva sus
  * rutas tal cual y no hizo falta tocarle una línea de código.
  */

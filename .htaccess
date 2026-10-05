@@ -74,6 +74,13 @@
     # se cobran $75 al agendar y van incluidos en el precio final. Fuera de
     # temporada se reparte /cita (gratis). Ojo: el slug corto da 404, va el completo.
     RewriteRule ^taxescita/?$ https://api.leadconnectorhq.com/widget/bookings/taxpreppingservices-a8b577d2-5db8-49dc-a617-e79ca64e313d [R=302,L]
+    # 4-oct-2026: el Gestor de archivos sale de Apps Script y vive en la misma app.
+    # /subir deja de ser una pagina puente a script.google.com: el portal del
+    # cliente, su API, sus estilos y el webhook de Telegram van por proxy a Render.
+    RewriteRule ^subir/?$          proxy.php  [QSA,L]
+    RewriteRule ^subir/api/        proxy.php  [QSA,L]
+    RewriteRule ^gestor/           proxy.php  [QSA,L]
+    RewriteRule ^tg/webhook$       proxy.php  [QSA,L]
     RewriteRule ^healthz$          proxy.php  [QSA,L]
     RewriteRule ^styles\.css$      proxy.php  [QSA,L]
 </IfModule>
